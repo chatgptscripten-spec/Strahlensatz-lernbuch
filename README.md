@@ -1,1 +1,1 @@
-Potenzen-lernbuch
+Strahlensatz-lernbuch
