@@ -3,272 +3,358 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Strahlensätze für Dummies</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<title>Mathe — Strahlensatz & Kreis</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f3ee;--card:#fff;--text:#1a1a2e;--muted:#778;--brd:#e0d8cc;
-  --blue:#2563eb;--blue2:#1d4ed8;--red:#dc2626;--green:#16a34a;
-  --orange:#ea580c;--purple:#7c3aed;--yellow:#ca8a04;
-  --lblue:#dbeafe;--lred:#fee2e2;--lgreen:#dcfce7;--lorange:#ffedd5;
-  --r:12px
+  --bg:#0d0f1a;--surface:#131625;--card:#1a1e35;--card2:#1f2440;
+  --border:#2a2f50;--border2:#353b62;
+  --text:#e8ecff;--muted:#6b74a8;--dim:#3d4570;
+  --blue:#4f8ef7;--blue2:#2563eb;--blue3:#1d4ed8;
+  --green:#22c55e;--green2:#16a34a;
+  --red:#f87171;--red2:#dc2626;
+  --orange:#fb923c;--orange2:#ea580c;
+  --yellow:#fbbf24;--yellow2:#d97706;
+  --purple:#a78bfa;--purple2:#7c3aed;
+  --teal:#2dd4bf;--teal2:#0d9488;
+  --pink:#f472b6;
+  --r:14px;--r2:10px
 }
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* STARFIELD */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.7;transform:scale(1.4)}}
 
 /* HEADER */
-.hdr{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.hlogo{font-size:15px;font-weight:900;display:flex;align-items:center;gap:7px}
-.hpts{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 11px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(13,15,26,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 16px}
+.hdr-inner{display:flex;align-items:center;gap:10px;height:52px;max-width:780px;margin:0 auto}
+.hlogo{font-size:16px;font-weight:900;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.03em}
+.hpts{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:4px 10px;border-radius:20px;border:1px solid rgba(251,191,36,.25)}
+
+/* COUNTDOWN */
+.countdown-bar{background:linear-gradient(90deg,rgba(79,142,247,.12),rgba(167,139,250,.12));border-bottom:1px solid var(--border);padding:6px 16px;text-align:center}
+.countdown-inner{display:flex;align-items:center;justify-content:center;gap:12px;max-width:780px;margin:0 auto;flex-wrap:wrap}
+.cd-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.cd-units{display:flex;gap:8px}
+.cd-unit{display:flex;flex-direction:column;align-items:center;gap:1px}
+.cd-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:var(--blue);line-height:1;min-width:32px;text-align:center}
+.cd-sub{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.cd-sep{font-family:'DM Mono',monospace;font-size:18px;color:var(--dim);font-weight:700;padding-top:2px}
+.cd-tag{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)}
 
 /* NAV */
-.nav{display:flex;background:#fff;border-bottom:2px solid var(--brd);overflow-x:auto;-webkit-overflow-scrolling:touch}
-.nbt{padding:10px 13px;font-size:11px;font-weight:800;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Nunito',sans-serif;white-space:nowrap;flex-shrink:0}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:52px;z-index:99}
+.nav::-webkit-scrollbar{display:none}
+.nbt{padding:11px 14px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .18s;letter-spacing:.01em}
+.nbt:hover{color:var(--text)}
 .nbt.on{color:var(--blue);border-bottom-color:var(--blue)}
 
-.wrap{max-width:720px;margin:0 auto;padding:14px 11px 120px}
+/* MAIN */
+.wrap{max-width:780px;margin:0 auto;padding:16px 14px 130px;position:relative;z-index:1}
 [data-pg]{display:none}[data-pg].show{display:block}
 
 /* CARDS */
-.card{background:#fff;border:2px solid var(--brd);border-radius:var(--r);padding:14px;margin-bottom:11px;box-shadow:0 1px 6px rgba(0,0,0,.05)}
-.ch{font-weight:900;font-size:13px;margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,142,247,.04),transparent 60%);pointer-events:none}
+.ch{font-weight:800;font-size:13px;margin-bottom:10px;display:flex;align-items:center;gap:7px;color:var(--text)}
 
-/* COLOR BOXES */
-.box{border-radius:9px;padding:11px 13px;margin:7px 0;font-size:12px;font-weight:700;line-height:1.8}
-.box.b{background:var(--lblue);border:2px solid #93c5fd;color:#1e3a8a}
-.box.g{background:var(--lgreen);border:2px solid #86efac;color:#14532d}
-.box.y{background:#fffbeb;border:2px solid #fcd34d;color:#713f12}
-.box.r{background:var(--lred);border:2px solid #fca5a5;color:#7f1d1d}
-.box.o{background:var(--lorange);border:2px solid #fdba74;color:#7c2d12}
-.box.p{background:#f5f3ff;border:2px solid #c4b5fd;color:#3b0764}
+/* COLORED BOXES */
+.box{border-radius:var(--r2);padding:11px 14px;margin:7px 0;font-size:12px;font-weight:600;line-height:1.8;border:1px solid}
+.box.b{background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.3);color:#a8c4fc}
+.box.g{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#86efac}
+.box.y{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.25);color:#fcd34d}
+.box.r{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3);color:#fca5a5}
+.box.o{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.3);color:#fdba74}
+.box.p{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.3);color:#c4b5fd}
+.box.t{background:rgba(45,212,191,.08);border-color:rgba(45,212,191,.25);color:#5eead4}
 
-.formel{background:#1e3a8a;color:#fff;border-radius:9px;padding:12px;text-align:center;margin:9px 0;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700}
-.formel .sub{font-size:11px;opacity:.7;margin-top:3px;font-family:'Nunito',sans-serif}
+/* FORMEL */
+.formel{background:linear-gradient(135deg,#0f1729,#131f3a);border:1px solid rgba(79,142,247,.4);border-radius:var(--r2);padding:14px;text-align:center;margin:9px 0;font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:var(--blue);box-shadow:0 0 20px rgba(79,142,247,.1)}
+.formel .sub{font-size:10px;opacity:.5;margin-top:4px;font-family:'DM Sans',sans-serif;color:var(--muted);font-weight:600}
 
 /* STEPS */
-.steps{display:flex;flex-direction:column;gap:6px;margin:7px 0}
-.step{display:flex;gap:8px;align-items:flex-start;padding:9px 11px;background:#f8f7ff;border-radius:8px;border-left:4px solid var(--blue)}
-.sn{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;background:var(--blue);color:#fff;padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px}
-.st2{font-size:12px;font-weight:700;flex:1;line-height:1.7}
-.sv{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--blue);flex-shrink:0}
+.steps{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.step{display:flex;gap:9px;align-items:flex-start;padding:10px 12px;background:var(--card2);border-radius:var(--r2);border-left:3px solid var(--blue)}
+.sn{font-family:'DM Mono',monospace;font-size:9px;font-weight:700;background:var(--blue);color:#fff;padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;letter-spacing:.05em}
+.st2{font-size:12px;font-weight:600;flex:1;line-height:1.7;color:var(--text)}
+.sv{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--green);flex-shrink:0}
 
 /* CANVAS */
-.cv-wrap{background:#f8f9ff;border:2px solid var(--brd);border-radius:10px;overflow:hidden;margin:8px 0}
-canvas{display:block;width:100%;cursor:pointer}
-.cv-info{padding:7px 12px;border-top:2px solid var(--brd);font-size:11px;font-weight:800;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.cv-ratio{font-family:'JetBrains Mono',monospace;color:var(--blue)}
-.srow{padding:8px 12px;border-top:2px solid var(--brd);display:flex;align-items:center;gap:9px;font-size:11px;font-weight:800;color:var(--muted)}
-.srow input[type=range]{flex:1;accent-color:var(--blue)}
-.sv2{color:var(--blue);min-width:30px;text-align:right;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px}
+.cv-wrap{background:var(--card2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin:8px 0}
+canvas{display:block;width:100%}
+.srow{padding:8px 12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;color:var(--muted)}
+.srow input[type=range]{flex:1;accent-color:var(--blue);height:4px;cursor:pointer}
+.sv2{color:var(--blue);min-width:36px;text-align:right;font-family:'DM Mono',monospace;font-size:11px}
 
 /* AUFGABEN */
-.aufg{background:#fff;border:2px solid var(--brd);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
-.aufg-head{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:2px solid var(--brd)}
-.aufg-titel{font-weight:900;font-size:13px;display:flex;align-items:center;gap:7px}
-.aufg-pts{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:#f0f4ff;border-radius:20px;padding:2px 9px;color:var(--blue)}
-.aufg-body{padding:13px 14px}
-.aufg-q{font-size:13px;font-weight:700;line-height:1.7;margin-bottom:9px;background:#fffbeb;border-left:4px solid #fcd34d;padding:8px 11px;border-radius:0 8px 8px 0}
-.aufg-inp-row{display:flex;gap:8px;align-items:center;margin:7px 0;flex-wrap:wrap}
-.aufg-inp-row label{font-size:12px;font-weight:800;min-width:30px}
-.ainp{padding:8px 11px;border:2px solid var(--brd);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;width:110px;outline:none;background:#f8f9ff;transition:border .15s}
-.ainp:focus{border-color:var(--blue)}
-.ainp.ok{border-color:var(--green)!important;background:var(--lgreen)!important;color:var(--green)!important}
-.ainp.no{border-color:var(--red)!important;background:var(--lred)!important;color:var(--red)!important}
-.achk{padding:8px 16px;background:var(--blue);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
-.achk:hover{background:var(--blue2)}
-.afb{font-size:12px;font-weight:800;margin-top:5px;min-height:16px;padding:0 2px}
+.aufg{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.aufg:hover{border-color:var(--border2)}
+.aufg-head{padding:11px 15px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--border)}
+.aufg-titel{font-weight:800;font-size:13px;display:flex;align-items:center;gap:7px}
+.aufg-pts{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;background:rgba(79,142,247,.15);border-radius:20px;padding:2px 9px;color:var(--blue);border:1px solid rgba(79,142,247,.3)}
+.aufg-body{padding:14px 15px}
+.aufg-q{font-size:12px;font-weight:600;line-height:1.75;margin-bottom:10px;background:rgba(251,191,36,.06);border-left:3px solid var(--yellow);padding:9px 12px;border-radius:0 var(--r2) var(--r2) 0;color:var(--text)}
+.aufg-inp-row{display:flex;gap:8px;align-items:center;margin:8px 0;flex-wrap:wrap}
+.aufg-inp-row label{font-size:12px;font-weight:700;min-width:30px;color:var(--muted)}
+.ainp{padding:8px 12px;border:1px solid var(--border2);border-radius:8px;font-family:'DM Mono',monospace;font-size:14px;font-weight:700;width:115px;outline:none;background:var(--card2);color:var(--text);transition:border .15s,background .15s}
+.ainp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,142,247,.12)}
+.ainp.ok{border-color:var(--green)!important;background:rgba(34,197,94,.08)!important;color:var(--green)!important}
+.ainp.no{border-color:var(--red)!important;background:rgba(248,113,113,.08)!important;color:var(--red)!important}
+.achk{padding:8px 16px;background:linear-gradient(135deg,var(--blue2),var(--blue3));border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.achk:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(37,99,235,.4)}
+.achk:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.afb{font-size:12px;font-weight:700;margin-top:6px;min-height:16px;padding:0 2px}
 .afb.ok{color:var(--green)}.afb.no{color:var(--red)}
-.atipp{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#f5f3ff;border:1.5px solid #c4b5fd;border-radius:16px;color:var(--purple);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px}
+.atipp{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:16px;color:var(--purple);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;margin-top:7px}
+.atipp:hover{background:rgba(167,139,250,.2)}
 
 /* MULTIPLE CHOICE */
-.opts4{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
-.opt4{padding:9px;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;transition:all .12s;text-align:center}
-.opt4:hover:not(:disabled){border-color:var(--blue);background:var(--lblue);color:var(--blue)}
-.opt4.ok{border-color:var(--green)!important;background:var(--lgreen)!important;color:var(--green)!important}
-.opt4.no{border-color:var(--red)!important;background:var(--lred)!important;color:var(--red)!important}
+.opts4{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0}
+.opt4{padding:10px;border-radius:9px;border:1px solid var(--border2);background:var(--card2);font-family:'DM Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;transition:all .12s;text-align:center;color:var(--text)}
+.opt4:hover:not(:disabled){border-color:var(--blue);background:rgba(79,142,247,.12);color:var(--blue)}
+.opt4.ok{border-color:var(--green)!important;background:rgba(34,197,94,.12)!important;color:var(--green)!important}
+.opt4.no{border-color:var(--red)!important;background:rgba(248,113,113,.08)!important;color:var(--red)!important}
 .opt4:disabled{cursor:default}
 
-/* THEMEN PICKER */
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px;margin-bottom:10px}
-.tc{background:#fff;border:2px solid var(--brd);border-radius:var(--r);padding:13px;cursor:pointer;transition:all .15s;text-align:center}
-.tc:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 4px 14px rgba(37,99,235,.12)}
-.tc.dn{border-color:#86efac;background:#f0fdf4}
-.tc-n{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:3px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
-.tc-i{font-size:26px;margin-bottom:4px}
-.tc-t{font-size:11px;font-weight:900;line-height:1.3}
-.back{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;background:#fff;border:2px solid var(--brd);border-radius:20px;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:11px}
+/* THEMEN GRID */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;margin-bottom:12px}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .18s;text-align:center;position:relative;overflow:hidden}
+.tc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,142,247,.05),transparent);opacity:0;transition:opacity .2s}
+.tc:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,142,247,.15)}
+.tc:hover::after{opacity:1}
+.tc.dn{border-color:var(--green2);background:rgba(34,197,94,.06)}
+.tc-n{font-size:9px;font-weight:700;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em}
+.tc-i{font-size:28px;margin-bottom:5px}
+.tc-t{font-size:11px;font-weight:800;line-height:1.3;color:var(--text)}
+.back{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;background:var(--card2);border:1px solid var(--border2);border-radius:20px;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:all .15s}
 .back:hover{border-color:var(--blue);color:var(--text)}
 
 /* HERO */
-.hero{border-radius:var(--r);padding:14px 16px;margin-bottom:11px;color:#fff;position:relative;overflow:hidden}
-.hero h2{font-size:18px;font-weight:900;margin-bottom:2px}
-.hero p{font-size:11px;opacity:.7}
-.hi{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.12}
+.hero{border-radius:var(--r);padding:16px 18px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden}
+.hero h2{font-size:19px;font-weight:900;margin-bottom:3px;letter-spacing:-.03em}
+.hero p{font-size:11px;opacity:.6;font-weight:500}
+.hi{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:50px;opacity:.15}
+
+/* PROGRESS */
+.prog-bar{background:var(--border);border-radius:20px;height:5px;overflow:hidden;margin:5px 0}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:20px;transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+
+/* LOESUNG */
+.loes-btn{padding:6px 13px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:8px;color:var(--purple);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:7px;transition:all .15s}
+.loes-btn:hover{background:rgba(167,139,250,.18)}
+.loes-box{display:none;margin-top:9px;padding:12px 13px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.25);border-radius:var(--r2);font-size:12px;font-weight:600;line-height:1.85;color:#86efac;font-family:'DM Mono',monospace}
+
+/* BEISPIEL BOX */
+.bsp-box{background:rgba(79,142,247,.07);border:1px solid rgba(79,142,247,.25);border-radius:var(--r2);padding:12px 13px;margin:8px 0}
+.bsp-box .bsp-title{font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+.bsp-box .bsp-steps{font-size:12px;font-weight:600;line-height:2;font-family:'DM Mono',monospace;color:var(--text)}
+
+/* TABELLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;font-weight:600;margin:9px 0}
+.tbl th{background:rgba(79,142,247,.15);color:var(--blue);padding:8px 10px;text-align:left;border:1px solid var(--border2);font-family:'DM Mono',monospace;font-size:11px}
+.tbl td{padding:7px 10px;border:1px solid var(--border);color:var(--text)}
+.tbl tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.tbl td.emp{color:var(--yellow);font-weight:700}
 
 /* RECHNER */
-.calc-wrap{max-width:300px;margin:0 auto}
-.cscr{background:#1a1a2e;color:#fff;border-radius:10px;padding:14px 12px 8px;margin-bottom:9px;text-align:right}
-.cexpr{font-size:12px;color:#667;font-family:'JetBrains Mono',monospace;min-height:17px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cval{font-size:30px;font-weight:700;font-family:'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.calc-wrap{max-width:310px;margin:0 auto}
+.cscr{background:#080b14;border:1px solid var(--border2);border-radius:var(--r2);padding:14px 13px 9px;margin-bottom:9px;text-align:right;box-shadow:inset 0 2px 8px rgba(0,0,0,.5)}
+.cexpr{font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;min-height:18px;margin-bottom:3px}
+.cval{font-size:32px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.cb2{padding:15px 5px;border-radius:9px;border:none;font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .1s}
-.cb2:active{transform:scale(.94)}
-.cn{background:#f0f4ff;color:#1a1a2e}.cn:hover{background:#dbeafe}
-.co{background:var(--blue);color:#fff}.co:hover{background:var(--blue2)}
-.ceq{background:var(--red);color:#fff}.ceq:hover{background:#b91c1c}
-.ccl{background:#6b7280;color:#fff}.ccl:hover{background:#4b5563}
-.ch-item{font-size:11px;font-family:'JetBrains Mono',monospace;padding:5px 9px;background:#f0f4ff;border-radius:6px;margin-bottom:4px;color:#556;border-left:3px solid var(--blue)}
+.cb2{padding:15px 5px;border-radius:9px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .1s}
+.cb2:active{transform:scale(.93)}
+.cn{background:var(--card2);color:var(--text);border:1px solid var(--border)}.cn:hover{background:var(--border);border-color:var(--border2)}
+.co{background:rgba(79,142,247,.2);color:var(--blue);border:1px solid rgba(79,142,247,.35)}.co:hover{background:rgba(79,142,247,.3)}
+.ceq{background:linear-gradient(135deg,var(--blue2),var(--purple2));color:#fff;border:none}.ceq:hover{filter:brightness(1.15)}
+.ccl{background:rgba(107,116,168,.2);color:var(--muted);border:1px solid var(--border)}.ccl:hover{background:rgba(107,116,168,.3)}
+.ch-item{font-size:10px;font-family:'DM Mono',monospace;padding:5px 9px;background:var(--card2);border-radius:6px;margin-bottom:4px;color:var(--muted);border-left:2px solid var(--blue)}
 
-/* MOXS CHAT */
-.mfab{position:fixed;bottom:20px;right:16px;z-index:200;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 20px rgba(124,58,237,.4);transition:all .18s;color:#fff;font-family:'Nunito',sans-serif;font-weight:900}
-.mfab:hover{transform:scale(1.1)}
-.mpanel{position:fixed;bottom:88px;right:16px;z-index:199;width:330px;max-height:500px;background:#fff;border:2px solid var(--brd);border-radius:16px;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.15);transform:scale(.92) translateY(14px);opacity:0;pointer-events:none;transition:all .2s;overflow:hidden}
+/* AI CHAT */
+.mfab{position:fixed;bottom:20px;right:16px;z-index:200;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--purple2),var(--blue2));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;box-shadow:0 4px 24px rgba(124,58,237,.5);transition:all .2s;color:#fff;font-family:'DM Mono',monospace}
+.mfab:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(124,58,237,.65)}
+.mpanel{position:fixed;bottom:88px;right:16px;z-index:199;width:335px;max-height:510px;background:var(--surface);border:1px solid var(--border2);border-radius:16px;display:flex;flex-direction:column;box-shadow:0 16px 50px rgba(0,0,0,.6);transform:scale(.92) translateY(14px);opacity:0;pointer-events:none;transition:all .2s cubic-bezier(.34,1.56,.64,1);overflow:hidden}
 .mpanel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
 @media(max-width:380px){.mpanel{width:calc(100vw - 22px);right:11px}}
-.mhdr{padding:11px 13px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;display:flex;align-items:center;gap:8px}
-.mav{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;font-weight:900;font-family:'Nunito',sans-serif}
-.minfo h4{font-size:13px;font-weight:900}
-.minfo p{font-size:10px;opacity:.6;font-weight:700}
-.mx{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:18px;padding:2px}
-.mmsgs{flex:1;overflow-y:auto;padding:9px;display:flex;flex-direction:column;gap:7px}
+.mhdr{padding:12px 14px;background:linear-gradient(135deg,var(--purple2),var(--blue2));display:flex;align-items:center;gap:9px}
+.mav{width:33px;height:33px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;font-family:'DM Mono',monospace;flex-shrink:0}
+.minfo h4{font-size:13px;font-weight:800}
+.minfo p{font-size:10px;opacity:.55;font-weight:500}
+.mx{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:18px;padding:2px;line-height:1}
+.mmsgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
+.mmsgs::-webkit-scrollbar{width:3px}.mmsgs::-webkit-scrollbar-thumb{background:var(--dim);border-radius:4px}
 .mmsg{display:flex;gap:6px;max-width:97%}
 .mmsg.user{align-self:flex-end;flex-direction:row-reverse}
-.mav2{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;font-weight:900}
-.mmsg.ai .mav2{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
-.mmsg.user .mav2{background:#eff6ff;color:var(--blue)}
-.mbbl{border-radius:10px;padding:8px 11px;font-size:11px;font-weight:700;line-height:1.7;word-break:break-word}
-.mmsg.ai .mbbl{background:#f5f3ff;border:1.5px solid #ddd6fe}
-.mmsg.user .mbbl{background:var(--blue);color:#fff}
-.mdots{display:flex;gap:4px;padding:8px 10px;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:10px}
+.mav2{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;font-family:'DM Mono',monospace}
+.mmsg.ai .mav2{background:linear-gradient(135deg,var(--purple2),var(--blue2));color:#fff}
+.mmsg.user .mav2{background:rgba(79,142,247,.2);color:var(--blue)}
+.mbbl{border-radius:10px;padding:9px 12px;font-size:11px;font-weight:500;line-height:1.75;word-break:break-word}
+.mmsg.ai .mbbl{background:var(--card2);border:1px solid var(--border)}
+.mmsg.user .mbbl{background:linear-gradient(135deg,var(--blue2),var(--blue3));color:#fff;border:none}
+.mdots{display:flex;gap:4px;padding:9px 11px;background:var(--card2);border:1px solid var(--border);border-radius:10px}
 .mdots span{width:5px;height:5px;background:var(--purple);border-radius:50%;animation:sd .65s infinite}
-.mdots span:nth-child(2){animation-delay:.13s}
-.mdots span:nth-child(3){animation-delay:.26s}
+.mdots span:nth-child(2){animation-delay:.13s}.mdots span:nth-child(3){animation-delay:.26s}
 @keyframes sd{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
-.mrow{padding:8px 9px;border-top:2px solid var(--brd);display:flex;gap:7px}
-.minp{flex:1;background:#f8f9ff;border:2px solid var(--brd);border-radius:8px;padding:7px 10px;color:var(--text);font-size:11px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;resize:none;max-height:60px;transition:border .13s}
+.mquick{display:flex;flex-wrap:wrap;gap:4px;padding:7px 10px;border-top:1px solid var(--border)}
+.mqb{padding:4px 10px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:12px;color:var(--purple);font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .13s}
+.mqb:hover{background:rgba(167,139,250,.2)}
+.mrow{padding:8px 10px;border-top:1px solid var(--border);display:flex;gap:7px}
+.minp{flex:1;background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;color:var(--text);font-size:11px;font-family:'DM Sans',sans-serif;font-weight:500;outline:none;resize:none;max-height:65px;transition:border .14s}
 .minp:focus{border-color:var(--purple)}
-.msend{background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;border-radius:8px;color:#fff;padding:8px 12px;font-size:14px;cursor:pointer;flex-shrink:0}
-.msend:disabled{opacity:.4;cursor:not-allowed}
-
-/* QUICK-FRAGEN fuer Moxs */
-.mquick{display:flex;flex-wrap:wrap;gap:4px;padding:6px 9px;border-top:1px solid var(--brd)}
-.mqb{padding:3px 9px;background:#f5f3ff;border:1.5px solid #c4b5fd;border-radius:12px;color:var(--purple);font-size:10px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
-.mqb:hover{background:#ede9fe}
+.msend{background:linear-gradient(135deg,var(--purple2),var(--blue2));border:none;border-radius:8px;color:#fff;padding:8px 12px;font-size:14px;cursor:pointer;flex-shrink:0;transition:all .15s}
+.msend:hover{transform:scale(1.05)}.msend:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
 /* TOAST */
-.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--blue);color:#fff;padding:8px 18px;border-radius:36px;font-weight:900;font-size:12px;z-index:300;transition:transform .25s;pointer-events:none;box-shadow:0 4px 14px rgba(37,99,235,.4)}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(70px);background:linear-gradient(135deg,var(--blue2),var(--purple2));color:#fff;padding:9px 20px;border-radius:36px;font-weight:700;font-size:12px;z-index:300;transition:transform .28s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:0 6px 20px rgba(37,99,235,.5)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
-
-/* FORTSCHRITT */
-.prog-bar{background:#e0e8ff;border-radius:20px;height:8px;overflow:hidden;margin:5px 0}
-.prog-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#2563eb);border-radius:20px;transition:width .5s}
+/* ANIMATIONS */
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pop{0%{transform:scale(.88)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadein .35s ease both}
 
 /* LEGENDE */
-.leg{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0;font-size:11px;font-weight:800}
+.leg{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0;font-size:11px;font-weight:600}
 .leg-item{display:flex;align-items:center;gap:5px}
 .leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 
-/* LÖSUNG TOGGLE */
-.loes-btn{padding:6px 13px;background:#f5f3ff;border:2px solid #c4b5fd;border-radius:8px;color:var(--purple);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:7px}
-.loes-box{display:none;margin-top:8px;padding:10px 12px;background:#f0fdf4;border:2px solid #86efac;border-radius:8px;font-size:12px;font-weight:700;line-height:1.8;color:#14532d}
+/* KREIS FORMELN TAB */
+.fml-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0}
+@media(max-width:380px){.fml-grid{grid-template-columns:1fr}}
+.fml-card{background:var(--card2);border:1px solid var(--border2);border-radius:var(--r2);padding:12px;text-align:center}
+.fml-card .fml-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.fml-card .fml-expr{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.fml-card .fml-desc{font-size:10px;color:var(--muted);font-weight:500;line-height:1.5}
 
-/* SCROLLBAR STYLE */
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:#f0f4ff}
-::-webkit-scrollbar-thumb{background:#93c5fd;border-radius:10px}
+/* TAGS */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.tag.blue{background:rgba(79,142,247,.15);color:var(--blue);border:1px solid rgba(79,142,247,.3)}
+.tag.green{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.tag.orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.3)}
+.tag.yellow{background:rgba(251,191,36,.1);color:var(--yellow);border:1px solid rgba(251,191,36,.25)}
+.tag.red{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3)}
 </style>
 </head>
 <body>
 
+<!-- STARS -->
+<div id="stars"></div>
+
+<!-- HEADER -->
 <header class="hdr">
-  <div class="hlogo">📐 Strahlensätze für Dummies</div>
-  <div class="hpts">⭐ <span id="pts">0</span> Pkt</div>
+  <div class="hdr-inner">
+    <div class="hlogo">📐 Mathe · 9. Klasse NRW</div>
+    <div style="flex:1"></div>
+    <div class="hpts">⭐ <span id="pts">0</span> Pkt</div>
+  </div>
 </header>
 
+<!-- COUNTDOWN -->
+<div class="countdown-bar">
+  <div class="countdown-inner">
+    <div class="cd-label">Arbeit in</div>
+    <div class="cd-units">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">0</span><span class="cd-sub">Tage</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">0</span><span class="cd-sub">Std</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">0</span><span class="cd-sub">Min</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">0</span><span class="cd-sub">Sek</span></div>
+    </div>
+    <div class="cd-tag">📅 12.06.2026</div>
+  </div>
+</div>
+
+<!-- NAV -->
 <div class="nav">
-  <button class="nbt on" onclick="switchPg('lernen',this)">📚 Lernen</button>
-  <button class="nbt" onclick="switchPg('aufgaben',this)">✏️ Aufgaben</button>
+  <button class="nbt on" onclick="switchPg('lernen',this)">📚 Strahlensatz</button>
+  <button class="nbt" onclick="switchPg('kreis',this)">⭕ Kreis</button>
+  <button class="nbt" onclick="switchPg('aufgaben',this)">✏️ Probearbeit</button>
   <button class="nbt" onclick="switchPg('spick',this)">📋 Spickzettel</button>
   <button class="nbt" onclick="switchPg('calc',this)">🧮 Rechner</button>
 </div>
 
 <div class="wrap">
 
-<!-- ═══════════════ LERNEN ═══════════════ -->
+<!-- ══════════ STRAHLENSATZ LERNEN ══════════ -->
 <div data-pg="lernen" class="show">
   <div id="picker">
-    <div style="background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:var(--r);padding:14px 16px;margin-bottom:13px;color:#fff;text-align:center">
-      <div style="font-size:28px;margin-bottom:5px">📐</div>
-      <div style="font-size:17px;font-weight:900;margin-bottom:2px">Strahlensätze — Schritt für Schritt</div>
-      <div style="font-size:11px;opacity:.7;font-weight:700">Klick ein Thema zum Starten!</div>
+    <div style="background:linear-gradient(135deg,#0f1e4a,#1d4ed8);border-radius:var(--r);padding:16px 18px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden">
+      <div style="font-size:32px;margin-bottom:6px">📐</div>
+      <div style="font-size:18px;font-weight:900;letter-spacing:-.03em;margin-bottom:3px">Strahlensätze</div>
+      <div style="font-size:11px;opacity:.55;font-weight:500">V-Figur & X-Figur · mit interaktiven Animationen</div>
+      <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:60px;opacity:.08">📐</div>
     </div>
     <div class="tgrid" id="tgrid"></div>
   </div>
   <div id="lesson" style="display:none"><div id="li"></div></div>
 </div>
 
-<!-- ═══════════════ AUFGABEN ═══════════════ -->
+<!-- ══════════ KREIS ══════════ -->
+<div data-pg="kreis">
+  <div id="kreis-picker">
+    <div style="background:linear-gradient(135deg,#0f3a2e,#16a34a);border-radius:var(--r);padding:16px 18px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden">
+      <div style="font-size:32px;margin-bottom:6px">⭕</div>
+      <div style="font-size:18px;font-weight:900;letter-spacing:-.03em;margin-bottom:3px">Kreis & Kreissektor</div>
+      <div style="font-size:11px;opacity:.55;font-weight:500">Umfang · Fläche · Bogen · Kreisausschnitt</div>
+    </div>
+    <div class="tgrid" id="kreis-grid"></div>
+  </div>
+  <div id="kreis-detail" style="display:none"><div id="kreis-content"></div></div>
+</div>
+
+<!-- ══════════ PROBEARBEIT AUFGABEN ══════════ -->
 <div data-pg="aufgaben">
   <div id="aufg-picker">
-    <div style="background:linear-gradient(135deg,#065f46,#059669);border-radius:var(--r);padding:14px 16px;margin-bottom:13px;color:#fff;text-align:center">
-      <div style="font-size:28px;margin-bottom:5px">✏️</div>
-      <div style="font-size:17px;font-weight:900;margin-bottom:2px">Aufgaben aus dem echten Leben</div>
-      <div style="font-size:11px;opacity:.7;font-weight:700">Wie in deinem Schulbuch — mit Skizzen!</div>
+    <div style="background:linear-gradient(135deg,#2d1040,#7c3aed);border-radius:var(--r);padding:16px 18px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden">
+      <div style="font-size:32px;margin-bottom:6px">📝</div>
+      <div style="font-size:18px;font-weight:900;letter-spacing:-.03em;margin-bottom:3px">Probearbeit-Aufgaben</div>
+      <div style="font-size:11px;opacity:.55;font-weight:500">Genau wie am 12.06 · gemischt mit Beispielen</div>
     </div>
     <div class="tgrid" id="aufg-grid"></div>
   </div>
   <div id="aufg-detail" style="display:none"><div id="aufg-content"></div></div>
 </div>
 
-<!-- ═══════════════ SPICKZETTEL ═══════════════ -->
+<!-- ══════════ SPICKZETTEL ══════════ -->
 <div data-pg="spick">
   <div class="card">
-    <div class="ch">🗺️ Die Grundidee</div>
-    <div class="box b">Zwei Geraden starten beim Scheitel <strong>S</strong>. Eine Parallele schneidet beide. Die Verhältnisse der Strecken sind auf beiden Seiten immer gleich!</div>
-    <canvas id="spick-cv" height="160" style="width:100%;border-radius:8px;border:2px solid var(--brd);margin:8px 0;background:#f8f9ff;display:block"></canvas>
+    <div class="ch">📌 Strahlensätze — Alle 3 Formeln</div>
+    <div class="fml-grid">
+      <div class="fml-card"><div class="fml-label">1. Strahlensatz</div><div class="fml-expr">SA/AB = SC/CD</div><div class="fml-desc">AB = Abstand zwischen den Parallelen</div></div>
+      <div class="fml-card"><div class="fml-label">2. Strahlensatz</div><div class="fml-expr">SA/SB = SC/SD</div><div class="fml-desc">SB = ganzer Weg von S aus</div></div>
+      <div class="fml-card" style="grid-column:1/-1"><div class="fml-label">3. Strahlensatz</div><div class="fml-expr">SA/SB = AC/BD</div><div class="fml-desc">Länge der Parallelen wächst proportional zum Abstand</div></div>
+    </div>
+    <canvas id="spick-cv" height="150" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;margin:8px 0"></canvas>
   </div>
   <div class="card">
-    <div class="ch" style="color:var(--blue)">📌 1. Strahlensatz</div>
-    <div class="formel">SA / AB = SC / CD<div class="sub">Abstand zwischen Parallelen auf beiden Strahlen ist gleich</div></div>
-    <div class="box b">→ SA und SC liegen auf derselben Seite (zwischen S und 1. Parallele)<br>→ AB und CD liegen zwischen den Parallelen</div>
-  </div>
-  <div class="card">
-    <div class="ch" style="color:var(--green)">📌 2. Strahlensatz</div>
-    <div class="formel" style="background:#14532d">SA / SB = SC / SD<div class="sub">Abstand vom Scheitel S zu jeder Parallele — beide starten bei S!</div></div>
-    <div class="box g">→ SA und SB starten beide bei S (ganzer Weg)<br>→ Das Verhältnis ist auf beiden Strahlen identisch</div>
-  </div>
-  <div class="card">
-    <div class="ch" style="color:var(--orange)">📌 3. Strahlensatz</div>
-    <div class="formel" style="background:#7c2d12">SA / SB = AC / BD<div class="sub">Die Länge der Parallelen selbst — wächst proportional</div></div>
-    <div class="box o">→ Je weiter vom Scheitel, desto länger die Parallele<br>→ Doppelter Abstand = doppelt so lange Parallele!</div>
-  </div>
-  <div class="card" style="border-color:#fca5a5">
-    <div class="ch" style="color:var(--red)">🚨 Typische Fehler!</div>
-    <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700">
-      <div style="padding:8px;background:var(--lred);border-radius:7px">❌ Satz 1 und 2 verwechseln → <strong style="color:var(--green)">Satz 1: AB (zwischen), Satz 2: SB (vom Scheitel)</strong></div>
-      <div style="padding:8px;background:var(--lred);border-radius:7px">❌ x falsch platzieren → <strong style="color:var(--green)">Immer erst die Zeichnung beschriften!</strong></div>
-      <div style="padding:8px;background:var(--lred);border-radius:7px">❌ Verschiedene Strahlen vergleichen → <strong style="color:var(--green)">Nur gleicher Strahl mit gleichem Strahl!</strong></div>
+    <div class="ch">⭕ Kreis-Formeln</div>
+    <div class="fml-grid">
+      <div class="fml-card"><div class="fml-label">Umfang</div><div class="fml-expr">u = 2·π·r</div><div class="fml-desc">oder u = π·d</div></div>
+      <div class="fml-card"><div class="fml-label">Fläche</div><div class="fml-expr">A = π·r²</div><div class="fml-desc">r = Radius</div></div>
+      <div class="fml-card"><div class="fml-label">Bogenlänge</div><div class="fml-expr">b = 2πr·α/360°</div><div class="fml-desc">α = Mittelpunktswinkel</div></div>
+      <div class="fml-card"><div class="fml-label">Kreisausschnitt</div><div class="fml-expr">A_S = πr²·α/360°</div><div class="fml-desc">auch: A_S = b·r/2</div></div>
     </div>
   </div>
-  <div class="card">
-    <div class="ch">📝 Lösungsstrategie (immer gleich!)</div>
-    <div class="steps">
-      <div class="step" style="border-color:var(--yellow)"><span class="sn" style="background:var(--yellow)">0</span><div class="st2"><strong>Skizze zeichnen</strong> mit allen Maßen und x markieren</div></div>
-      <div class="step"><span class="sn">1</span><div class="st2"><strong>Satz wählen:</strong> Satz 1 = zwischen Parallelen / Satz 2 = vom Scheitel / Satz 3 = Parallelen selbst</div></div>
-      <div class="step"><span class="sn">2</span><div class="st2"><strong>Verhältnisgleichung aufstellen:</strong> bekannte Strecken korrekt einsetzen</div></div>
-      <div class="step"><span class="sn">3</span><div class="st2"><strong>Umformen:</strong> x auf eine Seite bringen (×, ÷)</div></div>
-      <div class="step" style="border-color:var(--green)"><span class="sn" style="background:var(--green)">4</span><div class="st2"><strong>Antwortsatz schreiben</strong> mit Einheit!</div></div>
+  <div class="card" style="border-color:rgba(248,113,113,.3)">
+    <div class="ch">🚨 Häufige Fehler</div>
+    <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:600">
+      <div style="padding:9px 12px;background:rgba(248,113,113,.07);border-radius:var(--r2);border-left:3px solid var(--red)">❌ Satz 1 vs Satz 2 verwechseln → <span style="color:var(--green)">Satz 1: AB (zwischen), Satz 2: SB (von S aus)</span></div>
+      <div style="padding:9px 12px;background:rgba(248,113,113,.07);border-radius:var(--r2);border-left:3px solid var(--red)">❌ Bei Kreissektor Grad in rad umrechnen → <span style="color:var(--green)">Immer mit α/360° arbeiten!</span></div>
+      <div style="padding:9px 12px;background:rgba(248,113,113,.07);border-radius:var(--r2);border-left:3px solid var(--red)">❌ x falsch platziert → <span style="color:var(--green)">Erst Skizze mit Beschriftung!</span></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ RECHNER ═══════════════ -->
+<!-- ══════════ RECHNER ══════════ -->
 <div data-pg="calc">
   <div class="calc-wrap">
-    <div style="text-align:center;font-size:13px;font-weight:900;color:var(--muted);margin-bottom:9px">🧮 Taschenrechner</div>
+    <div style="text-align:center;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:9px;letter-spacing:.05em;text-transform:uppercase">Taschenrechner</div>
     <div class="cscr">
       <div class="cexpr" id="cexpr">&nbsp;</div>
       <div class="cval" id="cval">0</div>
@@ -298,33 +384,37 @@ canvas{display:block;width:100%;cursor:pointer}
       <button class="cb2 co" onclick="cPow(2)" style="font-size:12px">x²</button>
       <button class="cb2 co" onclick="cPow(3)" style="font-size:12px">x³</button>
       <button class="cb2 co" onclick="cSqrt()" style="font-size:12px">√x</button>
-      <button class="cb2 ccl" onclick="cDel()" style="font-size:12px">⌫</button>
+      <button class="cb2 co" onclick="cPi()" style="font-size:12px">π</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:7px">
+      <button class="cb2 ccl" onclick="cDel()" style="font-size:12px">⌫ Löschen</button>
+      <button class="cb2 ccl" onclick="cHistClear()" style="font-size:11px">Verlauf weg</button>
     </div>
     <div id="chist" style="margin-top:9px"></div>
   </div>
 </div>
 
-</div><!-- /wrap -->
+</div>
 
-<!-- MOXS FAB -->
-<button class="mfab" onclick="toggleM()" id="mfab">MX</button>
+<!-- AI FAB -->
+<button class="mfab" onclick="toggleM()" id="mfab">KI</button>
 <div class="mpanel" id="mpanel">
   <div class="mhdr">
-    <div class="mav">MX</div>
-    <div class="minfo"><h4>Moxs — Dein Mathe-Tutor</h4><p>Erklärt anhand von Aufgaben & Skizzen</p></div>
+    <div class="mav">KI</div>
+    <div class="minfo"><h4>Mathe-Berater · Samuel</h4><p>Kostenlos · Erklärt ohne Lösung zu verraten</p></div>
     <button class="mx" onclick="toggleM()">✕</button>
   </div>
   <div class="mmsgs" id="mmsgs"></div>
   <div class="mquick" id="mquick">
-    <button class="mqb" onclick="mAsk('Was ist der Unterschied zwischen Satz 1 und Satz 2?')">1. vs 2. Satz?</button>
-    <button class="mqb" onclick="mAsk('Erkläre mir Satz 3 anhand einer Aufgabe')">Satz 3 Beispiel</button>
-    <button class="mqb" onclick="mAsk('Wie löse ich eine Strahlensatz Aufgabe Schritt für Schritt?')">Lösungsweg?</button>
-    <button class="mqb" onclick="mAsk('Zeig mir wie man x berechnet wenn SA=6, AB=3, SC=4 bekannt sind')">x berechnen</button>
+    <button class="mqb" onclick="mAsk('Was ist der Unterschied zwischen V-Figur und X-Figur beim Strahlensatz?')">V vs X?</button>
+    <button class="mqb" onclick="mAsk('Wie berechne ich einen Kreisausschnitt?')">Kreissektor?</button>
+    <button class="mqb" onclick="mAsk('Wie wähle ich den richtigen Strahlensatz (1, 2 oder 3)?')">Welcher Satz?</button>
+    <button class="mqb" onclick="mAsk('Erkläre Bogenlänge anhand eines Beispiels')">Bogenlänge?</button>
   </div>
   <div class="mrow">
-    <textarea class="minp" id="minp" rows="1" placeholder="Frag Moxs was du nicht verstehst..."
+    <textarea class="minp" id="minp" rows="1" placeholder="Frag mich was du nicht verstehst..."
       onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();mSend()}"
-      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,60)+'px'"></textarea>
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,65)+'px'"></textarea>
     <button class="msend" id="msend" onclick="mSend()">➤</button>
   </div>
 </div>
@@ -332,91 +422,98 @@ canvas{display:block;width:100%;cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════ GLOBAL STATE ═══════════
-let pts=0, ans={}, dT={};
-function sv(){try{localStorage.setItem('mox_str',JSON.stringify({pts,ans,dT}));}catch(e){}}
-function ld(){try{const d=JSON.parse(localStorage.getItem('mox_str')||'{}');pts=d.pts||0;ans=d.ans||{};dT=d.dT||{};document.getElementById('pts').textContent=pts;}catch(e){}}
+// ═════════ STATE ═════════
+let pts=0,ans={},dT={};
+function sv(){try{localStorage.setItem('samuel_mathe',JSON.stringify({pts,ans,dT}));}catch(e){}}
+function ld(){try{const d=JSON.parse(localStorage.getItem('samuel_mathe')||'{}');pts=d.pts||0;ans=d.ans||{};dT=d.dT||{};document.getElementById('pts').textContent=pts;}catch(e){}}
 
-window.addEventListener('DOMContentLoaded',()=>{
-  ld(); buildGrid(); buildAufgGrid(); drawSpick();
-  setTimeout(()=>{
-    mMsg('ai','Hey! Ich bin <strong>Moxs</strong> 👋\n\nIch erkläre dir die Strahlensätze — nicht nur mit Text, sondern mit echten Aufgaben, Skizzen und Beispielen aus deinem Schulbuch!\n\n💡 Frag mich direkt wenn du bei einer Aufgabe nicht weiterkommst. Ich gebe Tipps, aber sage dir nicht einfach die Lösung — damit du wirklich verstehst wie es geht! 😊');
-  },400);
-});
+// ═════════ STARS ═════════
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');s.className='star';
+    const size=Math.random()*2+1;
+    s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s`;
+    c.appendChild(s);
+  }
+})();
 
-function switchPg(n,btn){
-  document.querySelectorAll('.nbt').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
-  document.querySelectorAll('[data-pg]').forEach(p=>p.classList.remove('show'));
-  document.querySelector(`[data-pg="${n}"]`).classList.add('show');
+// ═════════ COUNTDOWN ═════════
+function updateCD(){
+  const target=new Date('2026-06-12T08:00:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){document.querySelector('.countdown-bar').innerHTML='<div style="text-align:center;font-size:13px;font-weight:800;color:var(--red);padding:8px">🎯 Heute ist die Arbeit! Viel Erfolg!</div>';return;}
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
 }
+updateCD();setInterval(updateCD,1000);
 
-// ═══════════ CANVAS HELPERS ═══════════
-const C={gold:'#fbbf24',blue:'#2563eb',red:'#dc2626',green:'#16a34a',orange:'#ea580c',purple:'#7c3aed',dim:'#cbd5e1',bg:'#f8f9ff',pink:'#ec4899'};
-
-function cline(ctx,x1,y1,x2,y2,col,w=2,dash=[]){
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.setLineDash(dash);
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();
-}
-function circ(ctx,x,y,col,r=5){
-  ctx.save();ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore();
-}
-function ctxt(ctx,t,x,y,col='#333',sz=12,bold=700){
-  ctx.save();ctx.fillStyle=col;ctx.font=`${bold} ${sz}px Nunito,sans-serif`;ctx.fillText(t,x,y);ctx.restore();
-}
-function cbox(ctx,x,y,w2,h2,fill,stroke){
-  ctx.save();ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=1.5;
-  ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w2,h2,4);else ctx.rect(x,y,w2,h2);
+// ═════════ CANVAS HELPERS ═════════
+const C={blue:'#4f8ef7',red:'#f87171',green:'#22c55e',orange:'#fb923c',purple:'#a78bfa',yellow:'#fbbf24',dim:'#2a2f50',bg:'#131625',teal:'#2dd4bf',muted:'#6b74a8'};
+function cline(ctx,x1,y1,x2,y2,col,w=2,dash=[]){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function circ(ctx,x,y,col,r=5){ctx.save();ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore();}
+function ctxt(ctx,t,x,y,col='#e8ecff',sz=12,bold=700){ctx.save();ctx.fillStyle=col;ctx.font=`${bold} ${sz}px DM Sans,sans-serif`;ctx.fillText(t,x,y);ctx.restore();}
+function infoBox(ctx,l1,v1,l2,v2,H,W){
+  ctx.save();ctx.fillStyle='rgba(19,22,37,.9)';ctx.strokeStyle=C.dim;ctx.lineWidth=1;
+  ctx.beginPath();if(ctx.roundRect)ctx.roundRect(4,H-38,W-8,33,6);else ctx.rect(4,H-38,W-8,33);
   ctx.fill();ctx.stroke();ctx.restore();
-}
-function infoBox(ctx,label1,val1,label2,val2,H,W){
-  cbox(ctx,6,H-40,W-12,34,'rgba(255,255,255,.95)','#d0d8f0');
-  ctxt(ctx,label1+' = '+val1,14,H-20,C.blue,11);
-  ctxt(ctx,label2+' = '+val2,W/2+8,H-20,C.orange,11);
+  ctxt(ctx,l1+' = '+v1,12,H-18,C.blue,10);
+  ctxt(ctx,l2+' = '+v2,W/2+10,H-18,C.orange,10);
 }
 
-// ═══════════ SPICKZETTEL CANVAS ═══════════
+// ═════════ SPICKZETTEL CANVAS ═════════
 function drawSpick(){
   const cv=document.getElementById('spick-cv');if(!cv)return;
-  const W=cv.offsetWidth||320,H=160;cv.width=W;cv.height=H;
+  const W=cv.offsetWidth||340,H=150;cv.width=W;cv.height=H;
   const ctx=cv.getContext('2d');
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
-  const sx=30,sy=H/2,L=W-50,a1=-0.32,a2=0.32;
-  cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,2);
-  cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,2);
+  const sx=36,sy=H/2,L=W-50,a1=-0.3,a2=0.3;
+  cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,1.5);
+  cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,1.5);
   const t1=0.4,t2=0.78;
   const A={x:sx+Math.cos(a1)*L*t1,y:sy+Math.sin(a1)*L*t1};
-  const C2={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
+  const Cp={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
   const B={x:sx+Math.cos(a1)*L*t2,y:sy+Math.sin(a1)*L*t2};
   const D={x:sx+Math.cos(a2)*L*t2,y:sy+Math.sin(a2)*L*t2};
-  cline(ctx,A.x,A.y,C2.x,C2.y,C.blue,3);
+  cline(ctx,A.x,A.y,Cp.x,Cp.y,C.blue,3);
   cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
-  circ(ctx,sx,sy,C.gold,7);
-  [A,C2].forEach(p=>circ(ctx,p.x,p.y,C.blue));
+  circ(ctx,sx,sy,C.yellow,7);
+  [A,Cp].forEach(p=>circ(ctx,p.x,p.y,C.blue));
   [B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
-  ctxt(ctx,'S',sx-18,sy+5,C.gold,13);
-  ctxt(ctx,'A',A.x+4,A.y-7,C.blue,11);
-  ctxt(ctx,'C',C2.x+4,C2.y+14,C.blue,11);
-  ctxt(ctx,'B',B.x+4,B.y-7,C.orange,11);
-  ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
-  // SA label
-  ctxt(ctx,'SA',((sx+A.x)/2)-8,(sy+A.y)/2-8,C.blue,10);
-  ctxt(ctx,'AB',((A.x+B.x)/2)-8,(A.y+B.y)/2-8,C.orange,10);
+  ctxt(ctx,'S',sx-18,sy+5,C.yellow,13);
+  ctxt(ctx,'A',A.x+4,A.y-7,C.blue,11);ctxt(ctx,'C',Cp.x+4,Cp.y+14,C.blue,11);
+  ctxt(ctx,'B',B.x+4,B.y-7,C.orange,11);ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
 }
 
-// ═══════════ THEMEN LERNEN ═══════════
+// ═════════ PAGE SWITCH ═════════
+function switchPg(n,btn){
+  document.querySelectorAll('.nbt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('[data-pg]').forEach(p=>p.classList.remove('show'));
+  document.querySelector(`[data-pg="${n}"]`).classList.add('show');
+  if(n==='spick')setTimeout(drawSpick,60);
+}
+
+// ═════════ THEMEN LERNEN ═════════
 const THEMEN=[
   {id:0,i:'💡',n:'Grundidee'},
   {id:1,i:'📐',n:'1. Strahlensatz'},
   {id:2,i:'📏',n:'2. Strahlensatz'},
   {id:3,i:'📊',n:'3. Strahlensatz'},
-  {id:4,i:'🧮',n:'Aufgaben rechnen'},
-  {id:5,i:'🏆',n:'Alles nochmal'},
+  {id:4,i:'✖️',n:'X-Figur (über Kreuz)'},
+  {id:5,i:'🏆',n:'Quiz — Alles'},
 ];
 function buildGrid(){
   document.getElementById('tgrid').innerHTML=THEMEN.map(t=>{
-    const d=!!dT[t.id];
+    const d=!!dT['t'+t.id];
     return`<div class="tc${d?' dn':''}" onclick="openT(${t.id})">
-      <div class="tc-n">Thema ${t.id+1}${d?' ✅':''}</div>
+      <div class="tc-n">Thema ${t.id+1}${d?' ✓':''}</div>
       <div class="tc-i">${t.i}</div>
       <div class="tc-t">${t.n}</div>
     </div>`;
@@ -431,8 +528,9 @@ function openT(id){
     if(id===1)setupCV('cv1',drawCV1);
     if(id===2)setupCV('cv2',drawCV2);
     if(id===3)setupCV('cv3',drawCV3);
+    if(id===4)setupCV('cv4',drawCVX);
     buildQ(id);
-  },50);
+  },60);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function goBack(){
@@ -442,981 +540,969 @@ function goBack(){
 }
 const BK=`<button class="back" onclick="goBack()">← Zurück</button>`;
 
-// Generic canvas setup with slider
-function setupCV(cvId, drawFn){
+function setupCV(cvId,drawFn){
   const cv=document.getElementById(cvId);if(!cv)return;
   const sid=cvId.replace('cv','s');
-  const sv=document.getElementById(sid+'v');
   const s=document.getElementById(sid);
+  const svEl=document.getElementById(sid+'v');
   if(!s)return;
   function update(){
-    const W=cv.offsetWidth||320,H=200;
-    cv.width=W;cv.height=H;
+    const W=cv.offsetWidth||340,H=200;cv.width=W;cv.height=H;
     drawFn(cv.getContext('2d'),W,H,parseFloat(s.value)/100);
-    if(sv)sv.textContent=s.value+'%';
+    if(svEl)svEl.textContent=s.value+'%';
   }
-  s.addEventListener('input',update);
-  update();
-  window._cvResizeHandlers=window._cvResizeHandlers||{};
-  window._cvResizeHandlers[cvId]=update;
+  s.addEventListener('input',update);update();
+  window._cvRH=window._cvRH||{};window._cvRH[cvId]=update;
 }
-window.addEventListener('resize',()=>{Object.values(window._cvResizeHandlers||{}).forEach(f=>f());drawSpick();});
+window.addEventListener('resize',()=>{Object.values(window._cvRH||{}).forEach(f=>f());drawSpick();});
 
-// ═══ DRAW FUNCTIONS ═══
+// ═════ DRAW FUNCTIONS ═════
 function drawCV0(ctx,W,H,t){
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
-  const sx=35,sy=H/2,L=W-55,a1=-0.33,a2=0.33;
-  cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,2);
-  cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,2);
+  const sx=36,sy=H/2,L=W-54,a1=-0.3,a2=0.3;
+  cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,1.5);
+  cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,1.5);
   const t1=t,t2=Math.min(t+0.38,0.92);
   const A={x:sx+Math.cos(a1)*L*t1,y:sy+Math.sin(a1)*L*t1};
-  const C2={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
+  const Cp={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
   const B={x:sx+Math.cos(a1)*L*t2,y:sy+Math.sin(a1)*L*t2};
   const D={x:sx+Math.cos(a2)*L*t2,y:sy+Math.sin(a2)*L*t2};
-  cline(ctx,A.x,A.y,C2.x,C2.y,C.blue,3);
-  cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
-  circ(ctx,sx,sy,C.gold,7); [A,C2].forEach(p=>circ(ctx,p.x,p.y,C.blue));
-  [B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
-  ctxt(ctx,'S',sx-18,sy+5,C.gold,13);
-  ctxt(ctx,'A',A.x+4,A.y-8,C.blue,11); ctxt(ctx,'C',C2.x+4,C2.y+14,C.blue,11);
-  ctxt(ctx,'B',B.x+4,B.y-8,C.orange,11); ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
+  cline(ctx,A.x,A.y,Cp.x,Cp.y,C.blue,3);cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
+  circ(ctx,sx,sy,C.yellow,7);[A,Cp].forEach(p=>circ(ctx,p.x,p.y,C.blue));[B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
+  ctxt(ctx,'S',sx-18,sy+5,C.yellow,13);
+  ctxt(ctx,'A',A.x+4,A.y-8,C.blue,11);ctxt(ctx,'C',Cp.x+4,Cp.y+14,C.blue,11);
+  ctxt(ctx,'B',B.x+4,B.y-8,C.orange,11);ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
   const SA=Math.hypot(A.x-sx,A.y-sy),AB=Math.hypot(B.x-A.x,B.y-A.y);
-  const SC=Math.hypot(C2.x-sx,C2.y-sy),CD=Math.hypot(D.x-C2.x,D.y-C2.y);
+  const SC=Math.hypot(Cp.x-sx,Cp.y-sy),CD=Math.hypot(D.x-Cp.x,D.y-Cp.y);
   infoBox(ctx,'SA/AB',(SA/AB).toFixed(2),'SC/CD',(SC/CD).toFixed(2),H,W);
 }
 function drawCV1(ctx,W,H,t){
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
-  const sx=35,sy=H/2,L=W-55,a1=-0.33,a2=0.33;
+  const sx=36,sy=H/2,L=W-54,a1=-0.3,a2=0.3;
   cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,1.5);
   cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,1.5);
   const t1=t,t2=Math.min(t+0.4,0.92);
   const A={x:sx+Math.cos(a1)*L*t1,y:sy+Math.sin(a1)*L*t1};
-  const C2={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
+  const Cp={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
   const B={x:sx+Math.cos(a1)*L*t2,y:sy+Math.sin(a1)*L*t2};
   const D={x:sx+Math.cos(a2)*L*t2,y:sy+Math.sin(a2)*L*t2};
-  // SA blau, AB orange
-  cline(ctx,sx,sy,A.x,A.y,C.blue,4); cline(ctx,A.x,A.y,B.x,B.y,C.orange,4);
-  cline(ctx,sx,sy,C2.x,C2.y,C.blue,4); cline(ctx,C2.x,C2.y,D.x,D.y,C.orange,4);
-  cline(ctx,A.x,A.y,C2.x,C2.y,'#bfdbfe',2,[4,3]);
-  cline(ctx,B.x,B.y,D.x,D.y,'#fed7aa',2,[4,3]);
-  circ(ctx,sx,sy,C.gold,7); [A,C2].forEach(p=>circ(ctx,p.x,p.y,C.blue));
-  [B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
-  ctxt(ctx,'S',sx-18,sy+5,C.gold,13);
-  ctxt(ctx,'A',A.x+4,A.y-8,C.blue,11); ctxt(ctx,'C',C2.x+4,C2.y+14,C.blue,11);
-  ctxt(ctx,'B',B.x+4,B.y-8,C.orange,11); ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
-  const mSA={(A.x+sx)/2:(A.x+sx)/2,y:(A.y+sy)/2};
-  ctxt(ctx,'SA',((sx+A.x)/2)-10,(sy+A.y)/2-9,C.blue,10);
+  cline(ctx,sx,sy,A.x,A.y,C.blue,4);cline(ctx,A.x,A.y,B.x,B.y,C.orange,4);
+  cline(ctx,sx,sy,Cp.x,Cp.y,C.blue,4);cline(ctx,Cp.x,Cp.y,D.x,D.y,C.orange,4);
+  cline(ctx,A.x,A.y,Cp.x,Cp.y,'rgba(79,142,247,.4)',2,[4,3]);
+  cline(ctx,B.x,B.y,D.x,D.y,'rgba(251,146,60,.4)',2,[4,3]);
+  circ(ctx,sx,sy,C.yellow,7);[A,Cp].forEach(p=>circ(ctx,p.x,p.y,C.blue));[B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
+  ctxt(ctx,'S',sx-18,sy+5,C.yellow,13);
+  ctxt(ctx,'A',A.x+4,A.y-8,C.blue,11);ctxt(ctx,'C',Cp.x+4,Cp.y+14,C.blue,11);
+  ctxt(ctx,'B',B.x+4,B.y-8,C.orange,11);ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
+  ctxt(ctx,'SA',((sx+A.x)/2)-12,(sy+A.y)/2-9,C.blue,10);
   ctxt(ctx,'AB',((A.x+B.x)/2)-10,(A.y+B.y)/2-9,C.orange,10);
   const SA=Math.hypot(A.x-sx,A.y-sy),AB=Math.hypot(B.x-A.x,B.y-A.y);
-  const SC=Math.hypot(C2.x-sx,C2.y-sy),CD=Math.hypot(D.x-C2.x,D.y-C2.y);
+  const SC=Math.hypot(Cp.x-sx,Cp.y-sy),CD=Math.hypot(D.x-Cp.x,D.y-Cp.y);
   infoBox(ctx,'SA/AB',(SA/AB).toFixed(2),'SC/CD',(SC/CD).toFixed(2),H,W);
 }
 function drawCV2(ctx,W,H,t){
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
-  const sx=35,sy=H/2,L=W-55,a1=-0.33,a2=0.33;
+  const sx=36,sy=H/2,L=W-54,a1=-0.3,a2=0.3;
   cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,1.5);
   cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,1.5);
   const t1=t,t2=Math.min(t+0.4,0.92);
   const A={x:sx+Math.cos(a1)*L*t1,y:sy+Math.sin(a1)*L*t1};
-  const C2={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
+  const Cp={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
   const B={x:sx+Math.cos(a1)*L*t2,y:sy+Math.sin(a1)*L*t2};
   const D={x:sx+Math.cos(a2)*L*t2,y:sy+Math.sin(a2)*L*t2};
-  cline(ctx,A.x,A.y,C2.x,C2.y,C.blue,3);
-  cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
-  // SA und SB — beide von S aus
+  cline(ctx,A.x,A.y,Cp.x,Cp.y,C.blue,3);cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
   cline(ctx,sx,sy,A.x,A.y,C.blue,4);
   cline(ctx,sx,sy,B.x,B.y,C.orange,2,[5,3]);
-  circ(ctx,sx,sy,C.gold,7); [A,C2].forEach(p=>circ(ctx,p.x,p.y,C.blue));
-  [B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
-  ctxt(ctx,'S',sx-18,sy+5,C.gold,13);
-  ctxt(ctx,'A',A.x+4,A.y-8,C.blue,11); ctxt(ctx,'C',C2.x+4,C2.y+14,C.blue,11);
-  ctxt(ctx,'B',B.x+4,B.y-8,C.orange,11); ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
-  ctxt(ctx,'SA',((sx+A.x)/2)-6,(sy+A.y)/2-9,C.blue,10);
-  ctxt(ctx,'SB',((sx+B.x)/2)-6,(sy+B.y)/2+14,C.orange,10);
+  circ(ctx,sx,sy,C.yellow,7);[A,Cp].forEach(p=>circ(ctx,p.x,p.y,C.blue));[B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
+  ctxt(ctx,'S',sx-18,sy+5,C.yellow,13);
+  ctxt(ctx,'A',A.x+4,A.y-8,C.blue,11);ctxt(ctx,'C',Cp.x+4,Cp.y+14,C.blue,11);
+  ctxt(ctx,'B',B.x+4,B.y-8,C.orange,11);ctxt(ctx,'D',D.x+4,D.y+14,C.orange,11);
+  ctxt(ctx,'SA',((sx+A.x)/2)-7,(sy+A.y)/2-10,C.blue,10);
+  ctxt(ctx,'SB',((sx+B.x)/2)-7,(sy+B.y)/2+14,C.orange,10);
   const SA=Math.hypot(A.x-sx,A.y-sy),SB=Math.hypot(B.x-sx,B.y-sy);
-  const SC=Math.hypot(C2.x-sx,C2.y-sy),SD=Math.hypot(D.x-sx,D.y-sx);
+  const SC=Math.hypot(Cp.x-sx,Cp.y-sy),SD=Math.hypot(D.x-sx,D.y-sy);
   infoBox(ctx,'SA/SB',(SA/SB).toFixed(2),'SC/SD',(SC/SD).toFixed(2),H,W);
 }
 function drawCV3(ctx,W,H,t){
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
-  const sx=35,sy=H/2,L=W-55,a1=-0.38,a2=0.38;
+  const sx=36,sy=H/2,L=W-54,a1=-0.38,a2=0.38;
   cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,1.5);
   cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,1.5);
   const t1=t,t2=Math.min(t+0.4,0.92);
   const A={x:sx+Math.cos(a1)*L*t1,y:sy+Math.sin(a1)*L*t1};
-  const C2={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
+  const Cp={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
   const B={x:sx+Math.cos(a1)*L*t2,y:sy+Math.sin(a1)*L*t2};
   const D={x:sx+Math.cos(a2)*L*t2,y:sy+Math.sin(a2)*L*t2};
-  cline(ctx,A.x,A.y,C2.x,C2.y,C.blue,4);
-  cline(ctx,B.x,B.y,D.x,D.y,C.orange,4);
-  circ(ctx,sx,sy,C.gold,7); [A,C2].forEach(p=>circ(ctx,p.x,p.y,C.blue));
-  [B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
-  ctxt(ctx,'S',sx-18,sy+5,C.gold,13);
-  ctxt(ctx,'A',A.x-16,A.y-5,C.blue,11); ctxt(ctx,'C',C2.x-16,C2.y+14,C.blue,11);
-  ctxt(ctx,'B',B.x-16,B.y-5,C.orange,11); ctxt(ctx,'D',D.x-16,D.y+14,C.orange,11);
-  const mAC={(A.x+C2.x)/2:(A.x+C2.x)/2,y:(A.y+C2.y)/2};
-  ctxt(ctx,'AC',(A.x+C2.x)/2-8,(A.y+C2.y)/2+16,C.blue,11);
+  cline(ctx,A.x,A.y,Cp.x,Cp.y,C.blue,4);cline(ctx,B.x,B.y,D.x,D.y,C.orange,4);
+  circ(ctx,sx,sy,C.yellow,7);[A,Cp].forEach(p=>circ(ctx,p.x,p.y,C.blue));[B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange));
+  ctxt(ctx,'S',sx-18,sy+5,C.yellow,13);
+  ctxt(ctx,'A',A.x-16,A.y-5,C.blue,11);ctxt(ctx,'C',Cp.x-16,Cp.y+14,C.blue,11);
+  ctxt(ctx,'B',B.x-16,B.y-5,C.orange,11);ctxt(ctx,'D',D.x-16,D.y+14,C.orange,11);
+  ctxt(ctx,'AC',(A.x+Cp.x)/2-8,(A.y+Cp.y)/2+16,C.blue,11);
   ctxt(ctx,'BD',(B.x+D.x)/2-8,(B.y+D.y)/2+16,C.orange,11);
   const SA=Math.hypot(A.x-sx,A.y-sy),SB=Math.hypot(B.x-sx,B.y-sy);
-  const AC=Math.hypot(C2.x-A.x,C2.y-A.y),BD=Math.hypot(D.x-B.x,D.y-B.y);
+  const AC=Math.hypot(Cp.x-A.x,Cp.y-A.y),BD=Math.hypot(D.x-B.x,D.y-B.y);
   infoBox(ctx,'SA/SB',(SA/SB).toFixed(2),'AC/BD',(AC/BD).toFixed(2),H,W);
 }
+function drawCVX(ctx,W,H,t){
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  const cx=W/2,cy=H/2;
+  const t1=t*0.9,t2=Math.min(t+0.38,0.9);
+  const ang=0.32;
+  const A={x:cx+Math.cos(Math.PI+ang)*W*t1*0.5,y:cy+Math.sin(Math.PI+ang)*H*t1*0.55};
+  const B={x:cx+Math.cos(ang)*W*t2*0.5,y:cy+Math.sin(ang)*H*t2*0.55};
+  const C2={x:cx+Math.cos(Math.PI-ang)*W*t1*0.5,y:cy+Math.sin(Math.PI-ang)*H*t1*0.55};
+  const D={x:cx+Math.cos(-ang)*W*t2*0.5,y:cy+Math.sin(-ang)*H*t2*0.55};
+  cline(ctx,A.x,A.y,B.x,B.y,C.dim,1.5);
+  cline(ctx,C2.x,C2.y,D.x,D.y,C.dim,1.5);
+  cline(ctx,A.x,A.y,C2.x,C2.y,C.blue,3);
+  cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
+  circ(ctx,cx,cy,C.yellow,7);
+  circ(ctx,A.x,A.y,C.blue);circ(ctx,C2.x,C2.y,C.blue);
+  circ(ctx,B.x,B.y,C.orange);circ(ctx,D.x,D.y,C.orange);
+  ctxt(ctx,'S',cx+6,cy-8,C.yellow,13);
+  ctxt(ctx,'A',A.x-18,A.y+4,C.blue,11);ctxt(ctx,'C',C2.x+6,C2.y+4,C.blue,11);
+  ctxt(ctx,'B',B.x+6,B.y+4,C.orange,11);ctxt(ctx,'D',D.x-18,D.y+4,C.orange,11);
+  const SA=Math.hypot(A.x-cx,A.y-cy),SB=Math.hypot(B.x-cx,B.y-cy);
+  const SC=Math.hypot(C2.x-cx,C2.y-cy),SD=Math.hypot(D.x-cx,D.y-cy);
+  infoBox(ctx,'SA/SB',(SA/SB).toFixed(2),'SC/SD',(SC/SD).toFixed(2),H,W);
+}
 
-// ═══════════ QUIZ ═══════════
+// ═════════ QUIZ ═════════
 function shuf(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
 function fmt(n){return Number.isInteger(n)?String(n):String(Math.round(n*10000)/10000).replace('.',',');}
 function mkO(a){const s=new Set([a]);let tries=0;const d=Math.abs(a)>50?15:Math.abs(a)>10?3:1.5;while(s.size<4&&tries++<300){const c=+(a+([-d,-d*2,d,d*2][Math.floor(Math.random()*4)])).toFixed(2);if(c!==a&&c>0)s.add(c);}return shuf([...s].slice(0,4));}
 
 const QD={
   t0:[
-    {q:'Wie heißt der Punkt, von dem die zwei Strahlen ausgehen?',txt:true,opts:['Scheitel S','Mittelpunkt M','Drehpunkt D','Pol P'],cor:'Scheitel S',h:'Der Startpunkt heißt immer Scheitel S!'},
-    {q:'Was ist eine Parallele beim Strahlensatz?',txt:true,opts:['Eine Querlinie die beide Strahlen schneidet','Eine senkrechte Linie','Die Verlängerung eines Strahls','Ein Winkel'],cor:'Eine Querlinie die beide Strahlen schneidet',h:'Parallelen sind die Querlinien — sie liegen quer über beide Strahlen!'},
-    {q:'Was bleibt bei Strahlensätzen immer gleich?',txt:true,opts:['Das Verhältnis (der Bruch)','Die absolute Länge','Der Winkel','Die Anzahl der Punkte'],cor:'Das Verhältnis (der Bruch)',h:'Immer das Verhältnis — egal wo die Parallele liegt!'},
-    {q:'Wie viele Strahlensätze gibt es?',a:3,h:'Genau 3 Strahlensätze!'},
+    {q:'Wie heißt der Startpunkt der Strahlen?',txt:true,opts:['Scheitel S','Mittelpunkt M','Ursprung O','Pol P'],cor:'Scheitel S',h:'Immer Scheitel S!'},
+    {q:'Was ist eine Parallele beim Strahlensatz?',txt:true,opts:['Querlinie durch beide Strahlen','Senkrechte Linie','Verlängerter Strahl','Winkelhalbierende'],cor:'Querlinie durch beide Strahlen',h:'Parallelen sind Querlinien!'},
+    {q:'Was bleibt beim Strahlensatz konstant?',txt:true,opts:['Das Verhältnis der Strecken','Die absolute Länge','Der Abstand vom Scheitel','Der Winkel'],cor:'Das Verhältnis der Strecken',h:'Immer das Verhältnis — egal wo die Parallele!'},
+    {q:'Wie viele Strahlensätze gibt es?',a:3,h:'Genau 3!'},
   ],
   t1:[
     {q:'SA = 4, AB = 2. Was ist SA/AB?',a:2,h:'4 ÷ 2 = 2'},
     {q:'SA/AB = SC/CD. SA=6, AB=3, SC=8. Was ist CD?',a:4,h:'6/3=2 → CD=8÷2=4'},
     {q:'SA=10, AB=5, SC=12. Was ist CD?',a:6,h:'10/5=2 → CD=12÷2=6'},
     {q:'SA=3, AB=9, SC=2. Was ist CD?',a:6,h:'3/9=1/3 → CD=2÷(1/3)=6'},
-    {q:'SA=8, AB=4. Das Verhältnis SA/AB ist...',a:2,h:'8÷4=2'},
+    {q:'SA=8, AB=4. SA/AB = ?',a:2,h:'8÷4=2'},
   ],
   t2:[
-    {q:'SA=4, SB=8. Was ist SA/SB?',a:0.5,h:'4÷8=0,5'},
+    {q:'SA=4, SB=8. SA/SB = ?',a:0.5,h:'4÷8=0,5'},
     {q:'SA/SB=SC/SD. SA=4, SB=12, SC=5. Was ist SD?',a:15,h:'4/12=1/3 → SD=5÷(1/3)=15'},
     {q:'SA=6, SB=18, SC=4. Was ist SD?',a:12,h:'6/18=1/3 → SD=4÷(1/3)=12'},
     {q:'SA=5, SB=20, SC=3. Was ist SD?',a:12,h:'5/20=1/4 → SD=3÷(1/4)=12'},
-    {q:'SA=8, SB=16. Das Verhältnis SA/SB ist...',a:0.5,h:'8÷16=0,5'},
   ],
   t3:[
-    {q:'SA=2, SB=6. BD ist wie viel Mal länger als AC?',a:3,h:'6/2=3 → BD ist 3× so lang!'},
+    {q:'SA=2, SB=6. BD ist wie viel mal länger als AC?',a:3,h:'6/2=3'},
     {q:'SA=3, SB=9, AC=4. Was ist BD?',a:12,h:'9/3=3 → BD=4×3=12'},
     {q:'SA=4, SB=8, BD=10. Was ist AC?',a:5,h:'4/8=0,5 → AC=10×0,5=5'},
     {q:'SA=5, SB=15, AC=6. Was ist BD?',a:18,h:'15/5=3 → BD=6×3=18'},
   ],
   t4:[
-    {q:'SA=6, SB=12, SC=4. Was ist SD? (2. Satz)',a:8,h:'6/12=0,5 → SD=4÷0,5=8'},
-    {q:'SA=5, AB=10, SC=3. Was ist CD? (1. Satz)',a:6,h:'5/10=0,5 → CD=3÷0,5=6'},
-    {q:'SA=8, SB=16, AC=6. Was ist BD? (3. Satz)',a:12,h:'8/16=0,5 → BD=6÷0,5=12'},
-    {q:'SA=4, AB=2, SC=6. Was ist CD? (1. Satz)',a:3,h:'4/2=2 → CD=6÷2=3'},
+    {q:'X-Figur: Der Scheitel S liegt...',txt:true,opts:['In der Mitte (Schnittpunkt)','Am Rand','Außerhalb','Auf der Parallele'],cor:'In der Mitte (Schnittpunkt)',h:'Bei X-Figur kreuzen sich die Geraden — S ist in der Mitte!'},
+    {q:'SA=6, SB=9. SA/SB = ?',a:0.667,h:'6÷9=2/3≈0,667'},
+    {q:'X-Figur: SA=3, SB=12, SC=4. Was ist SD?',a:16,h:'SA/SB=SC/SD → 3/12=4/SD → SD=16'},
+    {q:'X-Figur: Welcher Satz gilt? SA/SB = ...',txt:true,opts:['SC/SD (2. Satz)','AB/CD (1. Satz)','SA/AB','AC/BD'],cor:'SC/SD (2. Satz)',h:'Bei X-Figur gilt der 2. Strahlensatz: SA/SB = SC/SD'},
   ],
   t5:[
-    {q:'SA=6, AB=3. Was ist SA/AB?',a:2,h:'6÷3=2'},
-    {q:'SA/SB=SC/SD. SA=5, SB=15, SC=4. Was ist SD?',a:12,h:'5/15=1/3 → SD=4÷(1/3)=12'},
+    {q:'SA=6, AB=3. SA/AB = ?',a:2,h:'6÷3=2'},
+    {q:'SA/SB=SC/SD. SA=5, SB=15, SC=4. Was ist SD?',a:12,h:'5/15=1/3 → SD=12'},
     {q:'SA=2, SB=10, AC=3. Was ist BD?',a:15,h:'2/10=0,2 → BD=3÷0,2=15'},
-    {q:'Satz 1 vs Satz 2: Was ist der Unterschied?',txt:true,opts:['Satz 1 nimmt AB (zwischen), Satz 2 nimmt SB (ganzer Weg)','Satz 1 ist schwerer als Satz 2','Satz 2 hat keine Formel','Es gibt keinen Unterschied'],cor:'Satz 1 nimmt AB (zwischen), Satz 2 nimmt SB (ganzer Weg)',h:'Genau! AB = nur der Abstand zwischen Parallelen; SB = von S bis zur Parallele'},
-    {q:'Ein Mast wirft einen Schatten von 9m. Ein 1,8m Pfosten daneben hat 2m Schatten. Wie hoch ist der Mast?',a:8.1,h:'1,8/2 = x/9 → x=8,1m'},
+    {q:'Satz 1 vs 2: was ist der Unterschied?',txt:true,opts:['Satz 1: AB zwischen, Satz 2: SB von S aus','Satz 1 ist für X-Figur','Kein Unterschied','Satz 2 hat keine Formel'],cor:'Satz 1: AB zwischen, Satz 2: SB von S aus',h:'Genau!'},
+    {q:'Ein 1,80m Mast wirft 2m Schatten. Ein Baum wirft 8m Schatten. Baumhöhe?',a:7.2,h:'1,80/2 = x/8 → x=7,2m'},
   ],
 };
 
 function buildQ(id){
-  const key='t'+id; const all=QD[key]; if(!all)return;
-  const wrap=document.getElementById('qa_'+key); if(!wrap)return;
+  const key='t'+id;const all=QD[key];if(!all)return;
+  const wrap=document.getElementById('qa_'+key);if(!wrap)return;
   const pool=shuf(all).slice(0,Math.min(4,all.length));
   window['_qp_'+key]=pool;
   wrap.innerHTML=pool.map((q,i)=>{
     if(q.txt){
       return`<div class="aufg" id="qc_${key}_${i}" style="margin-bottom:8px">
-        <div style="padding:10px 13px;font-weight:800;font-size:12px;line-height:1.5">${q.q}</div>
+        <div style="padding:10px 13px;font-weight:700;font-size:12px;line-height:1.55;color:var(--text)">${q.q}</div>
         <div class="opts4" style="padding:0 13px 10px">${q.opts.map(o=>`<button class="opt4" onclick="chkTxt('${key}',${i},'${o.replace(/'/g,"&#39;")}','${q.cor.replace(/'/g,"&#39;")}','${(q.h||'').replace(/'/g,"&#39;")}')">
           ${o}</button>`).join('')}</div>
         <div class="afb" id="qf_${key}_${i}" style="padding:0 13px 9px"></div>
       </div>`;
-    } else {
+    }else{
       const opts=mkO(q.a);
       return`<div class="aufg" id="qc_${key}_${i}" style="margin-bottom:8px">
-        <div style="padding:10px 13px;font-weight:800;font-size:12px;line-height:1.5">${q.q}</div>
+        <div style="padding:10px 13px;font-weight:700;font-size:12px;line-height:1.55;color:var(--text)">${q.q}</div>
         <div class="opts4" style="padding:0 13px 10px">${opts.map(o=>`<button class="opt4" onclick="chk('${key}',${i},${o},${q.a},'${(q.h||'').replace(/'/g,"&#39;")}')">
           ${fmt(o)}</button>`).join('')}</div>
         <div class="afb" id="qf_${key}_${i}" style="padding:0 13px 9px"></div>
-        <div style="padding:0 13px 9px"><button class="atipp" onclick='mAsk("Ich stecke bei dieser Aufgabe fest: ${q.q.replace(/'/g,'')} — gib mir bitte einen Tipp ohne die Lösung zu verraten!")'>🤖 Moxs fragen</button></div>
+        <div style="padding:0 13px 9px"><button class="atipp" onclick='mAsk("Aufgabe: ${q.q.replace(/'/g,'')} — Gib mir bitte einen Tipp!")'>🤖 KI-Tipp</button></div>
       </div>`;
     }
   }).join('');
   updCb(key,pool.length);
 }
-
 function chkTxt(key,i,chosen,cor,hint){
-  const k=key+'_'+i; if(ans[k])return;
+  const k=key+'_'+i;if(ans[k])return;
   const card=document.getElementById('qc_'+key+'_'+i);
   const fb=document.getElementById('qf_'+key+'_'+i);
   card.querySelectorAll('.opt4').forEach(b=>b.disabled=true);
   if(chosen===cor){
     card.querySelectorAll('.opt4').forEach(b=>{if(b.textContent.trim()===chosen)b.classList.add('ok');});
-    fb.textContent='✅ Richtig! 🎉'; fb.className='afb ok';
-    ans[k]=true; pts+=10; document.getElementById('pts').textContent=pts; sv();
-    toast('+10 Punkte! ⭐'); updCb(key,window['_qp_'+key]?.length||4);
+    fb.textContent='✅ Richtig!';fb.className='afb ok';
+    ans[k]=true;pts+=10;document.getElementById('pts').textContent=pts;sv();
+    toast('+10 Punkte! ⭐');updCb(key,window['_qp_'+key]?.length||4);
     card.style.animation='pop .4s';
-  } else {
-    card.querySelectorAll('.opt4').forEach(b=>{
-      if(b.textContent.trim()===chosen)b.classList.add('no');
-      if(b.textContent.trim()===cor)b.classList.add('ok');
-    });
-    fb.innerHTML='❌ Richtig: <strong>'+cor+'</strong> — '+hint; fb.className='afb no';
+  }else{
+    card.querySelectorAll('.opt4').forEach(b=>{if(b.textContent.trim()===chosen)b.classList.add('no');if(b.textContent.trim()===cor)b.classList.add('ok');});
+    fb.innerHTML='❌ Richtig: <strong>'+cor+'</strong> — '+hint;fb.className='afb no';
     card.style.animation='shake .3s';
     setTimeout(()=>{card.style.animation='';card.querySelectorAll('.opt4').forEach(b=>{b.disabled=false;b.classList.remove('no','ok');});fb.textContent='';},3500);
   }
 }
 function chk(key,i,chosen,a,hint){
-  const k=key+'_'+i; if(ans[k])return;
+  const k=key+'_'+i;if(ans[k])return;
   const card=document.getElementById('qc_'+key+'_'+i);
   const fb=document.getElementById('qf_'+key+'_'+i);
   card.querySelectorAll('.opt4').forEach(b=>b.disabled=true);
   let cl2=null;
   card.querySelectorAll('.opt4').forEach(b=>{if(Math.abs(parseFloat(b.textContent.replace(',','.'))-chosen)<0.05)cl2=b;});
   if(Math.abs(chosen-a)<0.05){
-    if(cl2)cl2.classList.add('ok'); fb.textContent='✅ Richtig! 🎉'; fb.className='afb ok';
-    ans[k]=true; pts+=10; document.getElementById('pts').textContent=pts; sv();
-    toast('+10 Punkte! ⭐'); updCb(key,window['_qp_'+key]?.length||4);
+    if(cl2)cl2.classList.add('ok');fb.textContent='✅ Richtig!';fb.className='afb ok';
+    ans[k]=true;pts+=10;document.getElementById('pts').textContent=pts;sv();
+    toast('+10 Punkte! ⭐');updCb(key,window['_qp_'+key]?.length||4);
     card.style.animation='pop .4s';
-  } else {
+  }else{
     if(cl2)cl2.classList.add('no');
     card.querySelectorAll('.opt4').forEach(b=>{if(Math.abs(parseFloat(b.textContent.replace(',','.'))-a)<0.05)b.classList.add('ok');});
-    fb.innerHTML='❌ Richtig: <strong>'+fmt(a)+'</strong> — '+hint; fb.className='afb no';
+    fb.innerHTML='❌ Richtig: <strong>'+fmt(a)+'</strong> — '+hint;fb.className='afb no';
     card.style.animation='shake .3s';
     setTimeout(()=>{card.style.animation='';card.querySelectorAll('.opt4').forEach(b=>{b.disabled=false;b.classList.remove('no','ok');});fb.textContent='';},3500);
   }
 }
 function updCb(key,total){
-  const btn=document.getElementById('cb_'+key); if(!btn)return;
+  const btn=document.getElementById('cb_'+key);if(!btn)return;
   const done=Object.keys(ans).filter(k=>k.startsWith(key+'_')).length;
   btn.disabled=done<total;
-  btn.textContent=done>=total?'✅ Thema abschließen & Punkte kassieren!':'Noch '+(total-done)+' Frage(n) beantworten';
+  btn.textContent=done>=total?'✅ Thema abschließen!':'Noch '+(total-done)+' Frage(n)';
 }
 function finT(id){
-  dT[id]=true; pts+=50; document.getElementById('pts').textContent=pts; sv();
-  toast('🎉 +50 Punkte! Nächstes Thema frei!');
+  dT['t'+id]=true;pts+=50;document.getElementById('pts').textContent=pts;sv();
+  toast('🎉 +50 Punkte!');
   setTimeout(goBack,700);
 }
 
-// ═══════════ LERNEN INHALTE ═══════════
+// ═════════ INHALTE ═════════
 const TCONTENT={
 0:`${BK}
-<div class="hero" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">
-  <div style="font-size:9px;font-weight:900;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px">Thema 1 — Grundidee</div>
-  <h2>💡 Was ist ein Strahlensatz?</h2><p>Einfach erklärt — wie für eine 1. Klasse!</p><div class="hi">💡</div>
+<div class="hero" style="background:linear-gradient(135deg,#0f1e4a,#1d4ed8)">
+  <h2>💡 Was ist ein Strahlensatz?</h2><p>Die Grundidee einfach erklärt</p><div class="hi">💡</div>
 </div>
-
 <div class="card">
-  <div class="ch">🎯 Die Idee in einem Satz</div>
-  <div class="box b" style="font-size:13px;text-align:center;padding:14px">
-    Wenn zwei Geraden von einem Punkt weggehen und du eine Linie quer drüber legst —<br>
-    <strong>bleiben die Abstände immer im gleichen Verhältnis!</strong>
+  <div class="ch">🎯 Die Kernidee</div>
+  <div class="box b" style="font-size:13px;font-weight:700;text-align:center">
+    Zwei Geraden starten am Scheitel S.<br>
+    Eine Parallele schneidet beide — die <strong>Verhältnisse bleiben immer gleich!</strong>
   </div>
+  <div class="cv-wrap"><canvas id="cv0" height="200"></canvas>
+  <div class="srow">Parallele verschieben: <input type="range" id="s0" min="20" max="72" value="40"> <span class="sv2" id="s0v">40%</span></div></div>
+  <div class="box g" style="margin-top:6px">👀 Egal wo du die Parallele hinlegst — die Verhältnisse unten ändern sich <strong>nicht</strong>!</div>
 </div>
-
 <div class="card">
-  <div class="ch">🍕 Vergleich mit dem echten Leben</div>
-  <div class="box y">
-    Stell dir einen Scheinwerfer vor, der ein breites Lichtbündel wirft.<br>
-    Je weiter du vom Scheinwerfer weg bist, desto breiter ist der Streifen.<br>
-    Aber das <strong>Verhältnis</strong> bleibt immer gleich! Genau das ist der Strahlensatz. 💡
-  </div>
-</div>
-
-<div class="card">
-  <div class="ch">📐 Bewege den Schieberegler!</div>
-  <div class="cv-wrap">
-    <canvas id="cv0" height="200"></canvas>
-    <div class="srow">🔵 Parallele verschieben: <input type="range" id="s0" min="20" max="72" value="40"> <span class="sv2" id="s0v">40%</span></div>
-  </div>
-  <div class="leg">
-    <div class="leg-item"><div class="leg-dot" style="background:#fbbf24"></div><span>S = Scheitel</span></div>
-    <div class="leg-item"><div class="leg-dot" style="background:#2563eb"></div><span>1. Parallele (A, C)</span></div>
-    <div class="leg-item"><div class="leg-dot" style="background:#ea580c"></div><span>2. Parallele (B, D)</span></div>
-  </div>
-  <div class="box g">👀 Die Verhältnisse unten im Bild bleiben immer gleich — egal wohin du schiebst!</div>
-</div>
-
-<div class="card">
-  <div class="ch">🗺️ Die wichtigsten Begriffe</div>
+  <div class="ch">🗺️ Begriffe</div>
   <div class="steps">
-    <div class="step" style="border-color:#fbbf24"><span class="sn" style="background:#fbbf24">S</span><div class="st2"><strong>Scheitel</strong> — der Punkt von dem beide Strahlen starten. Heißt immer S.</div></div>
-    <div class="step" style="border-color:#2563eb"><span class="sn">||</span><div class="st2"><strong>Parallele</strong> — die Querlinie, die beide Strahlen schneidet. Gibt immer 2 Parallelen.</div></div>
-    <div class="step"><span class="sn">SA</span><div class="st2"><strong>Streckenname</strong> — "SA" heißt: die Strecke von S nach A. Der erste Buchstabe = Start, zweiter = Ziel.</div></div>
-    <div class="step" style="border-color:#16a34a"><span class="sn">a/b</span><div class="st2"><strong>Verhältnis</strong> — a geteilt durch b. Zum Beispiel: SA/AB = 6/3 = 2. Das bleibt immer gleich!</div></div>
+    <div class="step" style="border-color:var(--yellow)"><span class="sn" style="background:var(--yellow2)">S</span><div class="st2"><strong>Scheitel</strong> — Startpunkt beider Strahlen</div></div>
+    <div class="step" style="border-color:var(--blue)"><span class="sn">||</span><div class="st2"><strong>Parallele</strong> — Querlinie durch beide Strahlen</div></div>
+    <div class="step"><span class="sn">a/b</span><div class="st2"><strong>Verhältnis</strong> — SA÷AB = konstant</div></div>
+    <div class="step" style="border-color:var(--teal)"><span class="sn" style="background:var(--teal2)">V</span><div class="st2"><strong>V-Figur</strong> — Scheitel außen (klassisch)</div></div>
+    <div class="step" style="border-color:var(--purple)"><span class="sn" style="background:var(--purple2)">X</span><div class="st2"><strong>X-Figur</strong> — Scheitel in der Mitte (über Kreuz)</div></div>
   </div>
 </div>
-
-<div class="card"><div class="ch">⚡ Lern-Check</div><div id="qa_t0"></div>
-<button class="achk" id="cb_t0" onclick="finT(0)" style="width:100%;margin-top:10px;padding:12px;font-size:13px" disabled>Thema abschließen</button></div>`,
+<div class="card"><div class="ch">⚡ Quiz</div><div id="qa_t0"></div>
+<button class="achk" id="cb_t0" onclick="finT(0)" style="width:100%;margin-top:10px;padding:12px" disabled>Thema abschließen</button></div>`,
 
 1:`${BK}
-<div class="hero" style="background:linear-gradient(135deg,#1e40af,#3b82f6)">
-  <div style="font-size:9px;font-weight:900;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px">Thema 2</div>
-  <h2>📐 1. Strahlensatz</h2><p>SA / AB = SC / CD — zwischen den Parallelen</p><div class="hi">1.</div>
+<div class="hero" style="background:linear-gradient(135deg,#0f1e4a,#2563eb)">
+  <h2>📐 1. Strahlensatz</h2><p>SA / AB = SC / CD</p><div class="hi">1.</div>
 </div>
-
 <div class="card">
-  <div class="ch">💡 Was misst der 1. Satz?</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">
-    <div style="padding:10px;background:#eff6ff;border-radius:8px;border:2px solid #93c5fd;text-align:center;font-size:12px;font-weight:800">
-      <div style="font-size:18px;margin-bottom:3px">🟦</div>
-      <div style="color:#1e40af">SA</div>
-      <div style="font-size:10px;color:#555;font-weight:700;margin-top:2px">Von S bis zur<br>1. Parallele</div>
-    </div>
-    <div style="padding:10px;background:#fff7ed;border-radius:8px;border:2px solid #fdba74;text-align:center;font-size:12px;font-weight:800">
-      <div style="font-size:18px;margin-bottom:3px">🟧</div>
-      <div style="color:#ea580c">AB</div>
-      <div style="font-size:10px;color:#555;font-weight:700;margin-top:2px">Zwischen den<br>Parallelen</div>
-    </div>
-  </div>
-  <div class="box b">Der 1. Satz sagt: <strong>SA/AB auf Strahl 1 = SC/CD auf Strahl 2</strong><br>Beide Brüche haben denselben Wert!</div>
-</div>
-
-<div class="card">
-  <div class="ch">📌 Die Formel mit Farben</div>
-  <div style="background:#1e3a8a;border-radius:9px;padding:14px;text-align:center;margin:8px 0">
-    <span style="color:#93c5fd;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SA</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> / </span>
-    <span style="color:#fdba74;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">AB</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> = </span>
-    <span style="color:#93c5fd;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SC</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> / </span>
-    <span style="color:#fdba74;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">CD</span>
-    <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:5px;font-family:'Nunito',sans-serif">🟦 blau = von S zur 1. Parallele &nbsp;|&nbsp; 🟧 orange = zwischen den Parallelen</div>
+  <div class="ch">📌 Formel</div>
+  <div class="formel">SA / AB = SC / CD<div class="sub">AB = Abstand zwischen den Parallelen</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0">
+    <div style="padding:10px;background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.25);border-radius:var(--r2);text-align:center;font-size:12px;font-weight:700"><div style="font-size:20px;margin-bottom:3px">🔵</div><div style="color:var(--blue)">SA</div><div style="font-size:10px;color:var(--muted);margin-top:2px">S → 1. Parallele</div></div>
+    <div style="padding:10px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:var(--r2);text-align:center;font-size:12px;font-weight:700"><div style="font-size:20px;margin-bottom:3px">🟠</div><div style="color:var(--orange)">AB</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Zwischen den Parallelen</div></div>
   </div>
 </div>
-
 <div class="card">
-  <div class="ch">✏️ Beispiel aus dem Schulbuch — Schritt für Schritt</div>
-  <div class="aufg-q">SA = 3,9 cm, x = AB (gesucht), SC = 2,6 cm, CD = x<br>→ Aus deinem Arbeitsblatt Aufgabe 1!</div>
-  <div class="steps">
-    <div class="step" style="border-color:#fbbf24"><span class="sn" style="background:#fbbf24">Skizze</span><div class="st2">SA=3,9 und SC=2,6 sind gegeben. Beide sind die "oberen" Strecken. x ist AB/CD.</div></div>
-    <div class="step"><span class="sn">Formel</span><div class="st2">SA/AB = SC/CD → 3,9/x = 2,6/x<br>Warte — hier sind SA und SC gegeben aber x steht auf beiden Seiten. Also: SA/SC = AB/CD → Verhältnis = 3,9/2,6</div></div>
-    <div class="step"><span class="sn">Rechnen</span><div class="st2">2,6/x = 3,9/3 → x = 2,6 · 3/3,9 = 2 cm</div></div>
-    <div class="step" style="border-color:#16a34a"><span class="sn" style="background:#16a34a">✅</span><div class="st2"><strong>x = 2 cm</strong> — genau wie auf deinem Arbeitsblatt!</div><div class="sv">2 cm</div></div>
+  <div class="ch">✏️ Beispiel (Maibaum-Aufgabe)</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Beispiel — ähnliche Struktur (nicht die Lösung deiner Aufgabe)</div>
+    <div class="aufg-q" style="font-size:11px">Ein 1,5m Pfosten wirft 2m Schatten. Baumschatten = 8m. Wie hoch ist der Baum?</div>
+    <div class="bsp-steps">Verhältnis: 1,5 / 2 = 0,75<br>x / 8 = 0,75<br>x = 0,75 · 8 = <strong style="color:var(--green)">6 m</strong></div>
   </div>
 </div>
-
-<div class="card">
-  <div class="ch">👁️ Interaktive Zeichnung — sieh wie SA (blau) und AB (orange) zusammenpassen</div>
-  <div class="cv-wrap">
-    <canvas id="cv1" height="200"></canvas>
-    <div class="srow">Parallele verschieben: <input type="range" id="s1" min="20" max="72" value="38"> <span class="sv2" id="s1v">38%</span></div>
-  </div>
-</div>
-
-<div class="card"><div class="ch">⚡ Lern-Check</div><div id="qa_t1"></div>
-<button class="achk" id="cb_t1" onclick="finT(1)" style="width:100%;margin-top:10px;padding:12px;font-size:13px" disabled>Thema abschließen</button></div>`,
+<div class="card"><div class="ch">👁️ Animation</div>
+<div class="cv-wrap"><canvas id="cv1" height="200"></canvas>
+<div class="srow">Parallele: <input type="range" id="s1" min="20" max="72" value="38"> <span class="sv2" id="s1v">38%</span></div></div></div>
+<div class="card"><div class="ch">⚡ Quiz</div><div id="qa_t1"></div>
+<button class="achk" id="cb_t1" onclick="finT(1)" style="width:100%;margin-top:10px;padding:12px" disabled>Thema abschließen</button></div>`,
 
 2:`${BK}
-<div class="hero" style="background:linear-gradient(135deg,#065f46,#059669)">
-  <div style="font-size:9px;font-weight:900;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px">Thema 3</div>
-  <h2>📏 2. Strahlensatz</h2><p>SA / SB = SC / SD — vom Scheitel aus messen</p><div class="hi">2.</div>
+<div class="hero" style="background:linear-gradient(135deg,#0a2a1e,#16a34a)">
+  <h2>📏 2. Strahlensatz</h2><p>SA / SB = SC / SD</p><div class="hi">2.</div>
 </div>
-
 <div class="card">
-  <div class="ch">💡 Der Unterschied zum 1. Satz</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">
-    <div style="padding:10px;background:#eff6ff;border-radius:8px;border:2px solid #93c5fd;font-size:12px;font-weight:800;text-align:center">
-      <div style="font-size:22px;margin-bottom:3px">1️⃣</div>
-      <div style="color:#1e40af;font-size:14px">SA / AB</div>
-      <div style="font-size:10px;color:#555;font-weight:700;margin-top:3px">AB = <em>zwischen</em><br>den Parallelen</div>
-    </div>
-    <div style="padding:10px;background:#f0fdf4;border-radius:8px;border:2px solid #86efac;font-size:12px;font-weight:800;text-align:center">
-      <div style="font-size:22px;margin-bottom:3px">2️⃣</div>
-      <div style="color:#14532d;font-size:14px">SA / SB</div>
-      <div style="font-size:10px;color:#555;font-weight:700;margin-top:3px">SB = <em>ganzer Weg</em><br>von S aus</div>
-    </div>
-  </div>
-  <div class="box y">🧠 <strong>Merktrick:</strong> Beim 2. Satz starten BEIDE Strecken bei S! SA und SB — beide von S aus. Beim 1. Satz startet AB zwischen den Parallelen.</div>
+  <div class="ch">📌 Formel</div>
+  <div class="formel" style="background:linear-gradient(135deg,#0a2218,#0f3a1e)">SA / SB = SC / SD<div class="sub">SB = ganzer Weg von S aus bis zur 2. Parallele</div></div>
+  <div class="box y" style="margin-top:9px">🧠 <strong>Merktrick:</strong> Beim 2. Satz starten <strong>beide</strong> Strecken bei S! SA und SB beginnen bei S.<br>Beim 1. Satz liegt AB <em>zwischen</em> den Parallelen.</div>
 </div>
-
 <div class="card">
-  <div class="ch">📌 Die Formel</div>
-  <div style="background:#065f46;border-radius:9px;padding:14px;text-align:center;margin:8px 0">
-    <span style="color:#86efac;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SA</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> / </span>
-    <span style="color:#fca5a5;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SB</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> = </span>
-    <span style="color:#86efac;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SC</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> / </span>
-    <span style="color:#fca5a5;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SD</span>
-    <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:5px;font-family:'Nunito',sans-serif">🟢 grün = kurze Strecke (von S bis 1. Parallele) &nbsp;|&nbsp; 🔴 rot = lange Strecke (von S bis 2. Parallele)</div>
+  <div class="ch">✏️ Beispiel (Turm-Aufgabe Typ)</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Beispiel — ähnliche Struktur</div>
+    <div class="aufg-q" style="font-size:11px">SA=4, SB=16, SC=3. Was ist SD?</div>
+    <div class="bsp-steps">SA/SB = SC/SD<br>4/16 = 3/SD<br>0,25 = 3/SD<br>SD = 3/0,25 = <strong style="color:var(--green)">12</strong></div>
   </div>
 </div>
-
-<div class="card">
-  <div class="ch">✏️ Beispiel aus dem Schulbuch — Aufgabe 9</div>
-  <div class="aufg-q">x/24 = 17/9 → Gesucht: x (Aus deinem Arbeitsblatt!)</div>
-  <div class="steps">
-    <div class="step" style="border-color:#fbbf24"><span class="sn" style="background:#fbbf24">Skizze</span><div class="st2">SA=17, SC=9 (Teilstrecken), SB=24 (Ganze Strecke auf einem Strahl)</div></div>
-    <div class="step"><span class="sn">Formel</span><div class="st2">x/24 = 17/9 &nbsp;|·24</div></div>
-    <div class="step"><span class="sn">Rechnen</span><div class="st2">x = (17/9) · 24 = 45,33 cm</div></div>
-    <div class="step" style="border-color:#16a34a"><span class="sn" style="background:#16a34a">✅</span><div class="st2">x ≈ <strong>45,33 cm</strong></div><div class="sv">45,33</div></div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="ch">👁️ Interaktive Zeichnung — SA (dick blau) und SB (gestrichelt)</div>
-  <div class="cv-wrap">
-    <canvas id="cv2" height="200"></canvas>
-    <div class="srow">Parallele verschieben: <input type="range" id="s2" min="20" max="72" value="38"> <span class="sv2" id="s2v">38%</span></div>
-  </div>
-</div>
-
-<div class="card"><div class="ch">⚡ Lern-Check</div><div id="qa_t2"></div>
-<button class="achk" id="cb_t2" onclick="finT(2)" style="width:100%;margin-top:10px;padding:12px;font-size:13px" disabled>Thema abschließen</button></div>`,
+<div class="card"><div class="ch">👁️ Animation</div>
+<div class="cv-wrap"><canvas id="cv2" height="200"></canvas>
+<div class="srow">Parallele: <input type="range" id="s2" min="20" max="72" value="38"> <span class="sv2" id="s2v">38%</span></div></div></div>
+<div class="card"><div class="ch">⚡ Quiz</div><div id="qa_t2"></div>
+<button class="achk" id="cb_t2" onclick="finT(2)" style="width:100%;margin-top:10px;padding:12px" disabled>Thema abschließen</button></div>`,
 
 3:`${BK}
-<div class="hero" style="background:linear-gradient(135deg,#7c2d12,#ea580c)">
-  <div style="font-size:9px;font-weight:900;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px">Thema 4</div>
-  <h2>📊 3. Strahlensatz</h2><p>SA / SB = AC / BD — die Parallelen wachsen mit</p><div class="hi">3.</div>
+<div class="hero" style="background:linear-gradient(135deg,#2d1010,#dc2626)">
+  <h2>📊 3. Strahlensatz</h2><p>SA / SB = AC / BD</p><div class="hi">3.</div>
 </div>
-
 <div class="card">
-  <div class="ch">💡 Die Idee</div>
-  <div class="box o">Je weiter eine Parallele vom Scheitel entfernt ist, desto <strong>länger</strong> ist sie!<br><br>
-    Wenn eine Parallele doppelt so weit weg ist → sie ist <strong>doppelt so lang</strong>.<br>
-    Das Verhältnis der Abstände = Verhältnis der Längen!
+  <div class="ch">📌 Formel</div>
+  <div class="formel" style="background:linear-gradient(135deg,#1a0909,#2d1010)">SA / SB = AC / BD<div class="sub">Länge der Parallelen wächst proportional zum Abstand</div></div>
+  <div class="box o">Je weiter die Parallele vom Scheitel, desto <strong>länger</strong> sie! Doppelter Abstand = doppelte Länge.</div>
+</div>
+<div class="card">
+  <div class="ch">✏️ Beispiel</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Beispiel — ähnliche Struktur</div>
+    <div class="aufg-q" style="font-size:11px">SA=3, SB=9, AC=4. Was ist BD?</div>
+    <div class="bsp-steps">SA/SB = AC/BD<br>3/9 = 4/BD<br>BD = 4 · 9/3 = <strong style="color:var(--green)">12</strong></div>
   </div>
 </div>
-
-<div class="card">
-  <div class="ch">📌 Die Formel</div>
-  <div style="background:#7c2d12;border-radius:9px;padding:14px;text-align:center;margin:8px 0">
-    <span style="color:#93c5fd;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SA</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> / </span>
-    <span style="color:#fdba74;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">SB</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> = </span>
-    <span style="color:#93c5fd;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">AC</span>
-    <span style="color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700"> / </span>
-    <span style="color:#fdba74;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">BD</span>
-    <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:5px;font-family:'Nunito',sans-serif">Abstandsverhältnis = Längenverhältnis der Parallelen</div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="ch">✏️ Beispiel — Aufgabe 12 aus deinem Schulbuch</div>
-  <div class="aufg-q">x/44 = (x+75)/99 (genau wie auf deinem Blatt!)<br>Gesucht: x</div>
-  <div class="steps">
-    <div class="step" style="border-color:#fbbf24"><span class="sn" style="background:#fbbf24">Skizze</span><div class="st2">AC=x, BD=x+75, SA=44, SB=99</div></div>
-    <div class="step"><span class="sn">Formel</span><div class="st2">x/44 = (x+75)/99 &nbsp;| ×99</div></div>
-    <div class="step"><span class="sn">Umformen</span><div class="st2">99x = 44(x+75) = 44x + 3300</div></div>
-    <div class="step"><span class="sn">Weiter</span><div class="st2">55x = 3300 → x = 60</div></div>
-    <div class="step" style="border-color:#16a34a"><span class="sn" style="background:#16a34a">✅</span><div class="st2"><strong>x = 60 cm</strong> — genau wie deine Lösung!</div><div class="sv">60 cm</div></div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="ch">👁️ Interaktive Zeichnung — AC (blau) und BD (orange) werden länger!</div>
-  <div class="cv-wrap">
-    <canvas id="cv3" height="200"></canvas>
-    <div class="srow">Parallele verschieben: <input type="range" id="s3" min="20" max="72" value="38"> <span class="sv2" id="s3v">38%</span></div>
-  </div>
-  <div class="box g" style="margin-top:8px">Siehst du? Je weiter die orangene Parallele vom Scheitel, desto länger wird sie — immer im gleichen Verhältnis!</div>
-</div>
-
-<div class="card"><div class="ch">⚡ Lern-Check</div><div id="qa_t3"></div>
-<button class="achk" id="cb_t3" onclick="finT(3)" style="width:100%;margin-top:10px;padding:12px;font-size:13px" disabled>Thema abschließen</button></div>`,
+<div class="card"><div class="ch">👁️ Animation</div>
+<div class="cv-wrap"><canvas id="cv3" height="200"></canvas>
+<div class="srow">Parallele: <input type="range" id="s3" min="20" max="72" value="38"> <span class="sv2" id="s3v">38%</span></div></div></div>
+<div class="card"><div class="ch">⚡ Quiz</div><div id="qa_t3"></div>
+<button class="achk" id="cb_t3" onclick="finT(3)" style="width:100%;margin-top:10px;padding:12px" disabled>Thema abschließen</button></div>`,
 
 4:`${BK}
-<div class="hero" style="background:linear-gradient(135deg,#4a1d96,#7c3aed)">
-  <div style="font-size:9px;font-weight:900;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px">Thema 5</div>
-  <h2>🧮 Aufgaben rechnen</h2><p>Schritt für Schritt — wie im Unterricht!</p><div class="hi">x=?</div>
+<div class="hero" style="background:linear-gradient(135deg,#1a0a2e,#7c3aed)">
+  <h2>✖️ X-Figur — über Kreuz</h2><p>Scheitel S liegt in der Mitte!</p><div class="hi">✖️</div>
 </div>
-
 <div class="card">
-  <div class="ch">🗺️ Der Lösungsweg — immer gleich!</div>
-  <div class="steps">
-    <div class="step" style="border-color:#fbbf24"><span class="sn" style="background:#fbbf24">0</span><div class="st2"><strong>Skizze zeichnen</strong> — alle Maße einzeichnen, x markieren</div></div>
-    <div class="step"><span class="sn">1</span><div class="st2"><strong>Satz wählen:</strong> Satz 1 wenn AB zwischen Parallelen, Satz 2 wenn SB vom Scheitel, Satz 3 wenn Parallelen selbst</div></div>
-    <div class="step"><span class="sn">2</span><div class="st2"><strong>Verhältnisgleichung aufstellen</strong> — bekannte Werte einsetzen</div></div>
-    <div class="step"><span class="sn">3</span><div class="st2"><strong>x allein stellen</strong> — beide Seiten mit dem passenden Wert multiplizieren oder dividieren</div></div>
-    <div class="step" style="border-color:#16a34a"><span class="sn" style="background:#16a34a">4</span><div class="st2"><strong>Antwortsatz</strong> mit Einheit schreiben!</div></div>
+  <div class="ch">💡 Was ist die X-Figur?</div>
+  <div class="box p">Bei der <strong>X-Figur</strong> kreuzen sich die zwei Geraden — der Scheitel S liegt <strong>zwischen</strong> den Punkten.<br><br>Trotzdem gilt: SA/SB = SC/SD (2. Strahlensatz!)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0">
+    <div style="padding:10px;background:rgba(45,212,191,.07);border:1px solid rgba(45,212,191,.25);border-radius:var(--r2);font-size:12px;font-weight:700;text-align:center"><div style="font-size:20px;margin-bottom:3px">V</div><div style="color:var(--teal)">V-Figur</div><div style="font-size:10px;color:var(--muted);margin-top:2px">S außen<br>Strahlen gehen weg</div></div>
+    <div style="padding:10px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:var(--r2);font-size:12px;font-weight:700;text-align:center"><div style="font-size:20px;margin-bottom:3px">X</div><div style="color:var(--purple)">X-Figur</div><div style="font-size:10px;color:var(--muted);margin-top:2px">S in der Mitte<br>Geraden kreuzen</div></div>
   </div>
 </div>
-
 <div class="card">
-  <div class="ch">✏️ Beispiel: Aufgabe 5 vom Arbeitsblatt</div>
-  <canvas id="bsp5cv" width="320" height="130" style="width:100%;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;display:block;margin:7px 0"></canvas>
-  <div class="aufg-q">x/2 = 3,75/1,5 — gesucht: x</div>
-  <div class="steps">
-    <div class="step"><span class="sn">Verhältnis</span><div class="st2">3,75/1,5 = 2,5</div></div>
-    <div class="step"><span class="sn">Rechnen</span><div class="st2">x/2 = 2,5 → x = 2 · 2,5 = <strong>5 cm</strong></div><div class="sv">5 cm</div></div>
+  <div class="ch">✏️ Beispiel X-Figur (Breite des Flusses)</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Beispiel — ähnliche Struktur (Typ: Breite des Flusses)</div>
+    <div class="aufg-q" style="font-size:11px">SA=3,1 cm, SC=2,9 cm, SZ=6,3 cm. Berechne SB (= x).</div>
+    <div class="bsp-steps">SA/SZ = SC/SB<br>3,1/6,3 = 2,9/x<br>x = 2,9 · 6,3 / 3,1 = <strong style="color:var(--green)">5,89 cm</strong></div>
   </div>
 </div>
-
-<div class="card"><div class="ch">⚡ Lern-Check</div><div id="qa_t4"></div>
-<button class="achk" id="cb_t4" onclick="finT(4)" style="width:100%;margin-top:10px;padding:12px;font-size:13px" disabled>Thema abschließen</button></div>`,
+<div class="card"><div class="ch">👁️ X-Figur Animation</div>
+<div class="cv-wrap"><canvas id="cv4" height="200"></canvas>
+<div class="srow">Verschieben: <input type="range" id="s4" min="20" max="72" value="45"> <span class="sv2" id="s4v">45%</span></div></div></div>
+<div class="card"><div class="ch">⚡ Quiz</div><div id="qa_t4"></div>
+<button class="achk" id="cb_t4" onclick="finT(4)" style="width:100%;margin-top:10px;padding:12px" disabled>Thema abschließen</button></div>`,
 
 5:`${BK}
-<div class="hero" style="background:linear-gradient(135deg,#1e3a8a,#7c3aed)">
-  <div style="font-size:9px;font-weight:900;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px">Thema 6 — FINALE 🏆</div>
-  <h2>🏆 Alles nochmal!</h2><p>Zeig was du drauf hast!</p><div class="hi">🎯</div>
+<div class="hero" style="background:linear-gradient(135deg,#0f1e4a,#7c3aed)">
+  <h2>🏆 Alles — Final-Quiz</h2><p>Strahlensatz + X-Figur + Übungen</p><div class="hi">🎯</div>
 </div>
 <div class="card">
-  <div class="ch">⚡ Blitz-Übersicht</div>
-  <div style="display:flex;flex-direction:column;gap:7px">
-    <div style="padding:10px 12px;border-radius:9px;background:#eff6ff;border:2px solid #93c5fd;font-size:12px;font-weight:800">📐 <strong>1. Satz:</strong> SA/AB = SC/CD &nbsp;·&nbsp; <span style="color:var(--muted)">AB = zwischen Parallelen</span></div>
-    <div style="padding:10px 12px;border-radius:9px;background:#f0fdf4;border:2px solid #86efac;font-size:12px;font-weight:800">📏 <strong>2. Satz:</strong> SA/SB = SC/SD &nbsp;·&nbsp; <span style="color:var(--muted)">SB = ganzer Weg von S</span></div>
-    <div style="padding:10px 12px;border-radius:9px;background:#fff7ed;border:2px solid #fdba74;font-size:12px;font-weight:800">📊 <strong>3. Satz:</strong> SA/SB = AC/BD &nbsp;·&nbsp; <span style="color:var(--muted)">Parallelen wachsen proportional</span></div>
+  <div class="ch">⚡ Schnellübersicht</div>
+  <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:600">
+    <div style="padding:9px 12px;background:rgba(79,142,247,.08);border-radius:var(--r2);border-left:3px solid var(--blue)">📐 <strong>1. Satz:</strong> SA/AB = SC/CD &nbsp;·&nbsp; <span style="color:var(--muted)">AB = zwischen Parallelen</span></div>
+    <div style="padding:9px 12px;background:rgba(34,197,94,.08);border-radius:var(--r2);border-left:3px solid var(--green)">📏 <strong>2. Satz:</strong> SA/SB = SC/SD &nbsp;·&nbsp; <span style="color:var(--muted)">SB = von S aus</span></div>
+    <div style="padding:9px 12px;background:rgba(251,146,60,.08);border-radius:var(--r2);border-left:3px solid var(--orange)">📊 <strong>3. Satz:</strong> SA/SB = AC/BD &nbsp;·&nbsp; <span style="color:var(--muted)">Parallelen wachsen</span></div>
+    <div style="padding:9px 12px;background:rgba(167,139,250,.08);border-radius:var(--r2);border-left:3px solid var(--purple)">✖️ <strong>X-Figur:</strong> SA/SB = SC/SD &nbsp;·&nbsp; <span style="color:var(--muted)">S in Mitte!</span></div>
   </div>
 </div>
-<div class="card"><div class="ch">🏆 Final-Quiz</div><div id="qa_t5"></div>
-<button class="achk" id="cb_t5" onclick="finT(5)" style="width:100%;margin-top:10px;padding:12px;font-size:13px;background:linear-gradient(135deg,#1e3a8a,#7c3aed)" disabled>🏆 Strahlensätze gemeistert!</button></div>`,
+<div class="card"><div class="ch">🏆 Quiz</div><div id="qa_t5"></div>
+<button class="achk" id="cb_t5" onclick="finT(5)" style="width:100%;margin-top:10px;padding:12px;background:linear-gradient(135deg,#1d4ed8,#7c3aed)" disabled>🏆 Strahlensätze gemeistert!</button></div>`,
 };
 
-// Draw kleine Skizze für Thema 5 Beispiel
-setTimeout(()=>{
-  const cv=document.getElementById('bsp5cv');
-  if(!cv)return;
-  const ctx=cv.getContext('2d');
-  const W=cv.offsetWidth||300, H=130;
-  cv.width=W; cv.height=H;
-  ctx.fillStyle='#f8f9ff'; ctx.fillRect(0,0,W,H);
-  const sx=20,sy=65,L=W-30,a1=-0.25,a2=0.25;
-  cline(ctx,sx,sy,sx+Math.cos(a1)*L,sy+Math.sin(a1)*L,C.dim,1.5);
-  cline(ctx,sx,sy,sx+Math.cos(a2)*L,sy+Math.sin(a2)*L,C.dim,1.5);
-  const t1=0.35,t2=0.72;
-  const A={x:sx+Math.cos(a1)*L*t1,y:sy+Math.sin(a1)*L*t1};
-  const C2={x:sx+Math.cos(a2)*L*t1,y:sy+Math.sin(a2)*L*t1};
-  const B={x:sx+Math.cos(a1)*L*t2,y:sy+Math.sin(a1)*L*t2};
-  const D={x:sx+Math.cos(a2)*L*t2,y:sy+Math.sin(a2)*L*t2};
-  cline(ctx,A.x,A.y,C2.x,C2.y,C.blue,3);
-  cline(ctx,B.x,B.y,D.x,D.y,C.orange,3);
-  cline(ctx,sx,sy,A.x,A.y,C.blue,3);
-  cline(ctx,A.x,A.y,B.x,B.y,C.orange,3);
-  circ(ctx,sx,sy,C.gold,6);
-  [A,C2].forEach(p=>circ(ctx,p.x,p.y,C.blue,4));
-  [B,D].forEach(p=>circ(ctx,p.x,p.y,C.orange,4));
-  ctxt(ctx,'S',sx-15,sy+4,C.gold,12);
-  ctxt(ctx,'2',((A.x+C2.x)/2)-4,(A.y+C2.y)/2+14,C.blue,10);
-  ctxt(ctx,'3,75',((B.x+D.x)/2)-12,(B.y+D.y)/2+14,C.orange,10);
-  ctxt(ctx,'1,5',((sx+A.x)/2)-8,(sy+A.y)/2-7,C.blue,10);
-  ctxt(ctx,'x',((A.x+B.x)/2)-5,(A.y+B.y)/2-7,C.orange,10);
-},200);
+// ═════════ KREIS ═════════
+const KREIS_THEMEN=[
+  {id:'grundl',i:'⭕',n:'Grundlagen'},
+  {id:'sektor',i:'🥧',n:'Kreissektor'},
+  {id:'tabelle',i:'📊',n:'Tabelle ausfüllen'},
+  {id:'aufg',i:'✏️',n:'Aufgaben Typ'},
+];
+function buildKreisGrid(){
+  document.getElementById('kreis-grid').innerHTML=KREIS_THEMEN.map(t=>`
+    <div class="tc" onclick="openKreis('${t.id}')">
+      <div class="tc-n">Thema</div>
+      <div class="tc-i">${t.i}</div>
+      <div class="tc-t">${t.n}</div>
+    </div>`).join('');
+}
+function openKreis(id){
+  document.getElementById('kreis-picker').style.display='none';
+  document.getElementById('kreis-detail').style.display='block';
+  document.getElementById('kreis-content').innerHTML=KREIS_CONTENT[id]||'';
+  setTimeout(()=>{
+    if(id==='grundl')drawKreis();
+    if(id==='sektor')drawSektor();
+  },60);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goBackKreis(){
+  document.getElementById('kreis-picker').style.display='block';
+  document.getElementById('kreis-detail').style.display='none';
+}
+const KBK=`<button class="back" onclick="goBackKreis()">← Zurück</button>`;
 
-// ═══════════ AUFGABEN SEITE ═══════════
+function drawKreis(){
+  const cv=document.getElementById('cv-kreis');if(!cv)return;
+  const W=cv.offsetWidth||340,H=220;cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  const cx=W/2,cy=H/2,r=70;
+  ctx.save();ctx.strokeStyle=C.blue;ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();ctx.restore();
+  cline(ctx,cx,cy,cx+r,cy,C.orange,2);
+  cline(ctx,cx-r,cy,cx+r,cy,C.dim,1,[4,3]);
+  circ(ctx,cx,cy,C.yellow,5);
+  ctxt(ctx,'M',cx-14,cy+5,C.yellow,12);
+  ctxt(ctx,'r',cx+r/2-4,cy-8,C.orange,12);
+  ctxt(ctx,'d = 2r',(cx-r)-2,cy-8,C.blue,11);
+  ctxt(ctx,'u = 2·π·r',cx-50,cy+r+18,C.teal,12);
+  ctxt(ctx,'A = π·r²',cx-40,cy+r+33,C.green,12);
+}
+function drawSektor(){
+  const cv=document.getElementById('cv-sektor');if(!cv)return;
+  const W=cv.offsetWidth||340,H=220;cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  const cx=W/2,cy=H/2+20,r=75,a1=-Math.PI/2-0.4,a2=-Math.PI/2+1.8;
+  ctx.save();ctx.fillStyle='rgba(79,142,247,.12)';ctx.strokeStyle=C.blue;ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a1,a2);ctx.closePath();
+  ctx.fill();ctx.stroke();ctx.restore();
+  ctx.save();ctx.strokeStyle=C.orange;ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,r,a1,a2,false);ctx.stroke();ctx.restore();
+  cline(ctx,cx,cy,cx+Math.cos(a1)*r,cy+Math.sin(a1)*r,C.muted,1.5);
+  cline(ctx,cx,cy,cx+Math.cos(a2)*r,cy+Math.sin(a2)*r,C.muted,1.5);
+  ctx.save();ctx.strokeStyle=C.purple;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,22,a1,a2);ctx.stroke();ctx.restore();
+  ctxt(ctx,'α',cx+20,cy-2,C.purple,13);
+  ctxt(ctx,'r',cx+25,cy-30,C.muted,11);
+  ctxt(ctx,'b (Bogen)',cx+r*0.4-15,cy-r*0.7,C.orange,11);
+  ctxt(ctx,'A_S = π·r²·α/360°',10,H-15,C.blue,11);
+  ctxt(ctx,'b = 2πr·α/360°',10,H-2,C.orange,11);
+  circ(ctx,cx,cy,C.yellow,5);
+}
+
+const KREIS_CONTENT={
+grundl:`${KBK}
+<div class="hero" style="background:linear-gradient(135deg,#0a2216,#16a34a)">
+  <h2>⭕ Kreis — Grundlagen</h2><p>Umfang, Fläche, Radius, Durchmesser</p><div class="hi">⭕</div>
+</div>
+<div class="card">
+  <div class="ch">📌 Formeln</div>
+  <div class="fml-grid">
+    <div class="fml-card"><div class="fml-label">Umfang</div><div class="fml-expr">u = 2·π·r</div><div class="fml-desc">r = Radius (halber Durchmesser)</div></div>
+    <div class="fml-card"><div class="fml-label">Fläche</div><div class="fml-expr">A = π·r²</div><div class="fml-desc">π ≈ 3,14159...</div></div>
+  </div>
+  <div class="cv-wrap"><canvas id="cv-kreis" height="220"></canvas></div>
+</div>
+<div class="card">
+  <div class="ch">✏️ Beispiel</div>
+  <div class="bsp-box">
+    <div class="bsp-title">r = 7,5 cm</div>
+    <div class="bsp-steps">d = 2 · 7,5 = 15 cm<br>u = 2 · π · 7,5 ≈ 47,1 cm<br>A = π · 7,5² ≈ 176,7 cm²</div>
+  </div>
+</div>
+<div class="card">
+  <div class="ch">✏️ Tabelle Typ — Aufgabe 1 aus der Probearbeit</div>
+  <div class="box y">💡 Merke dir die Umkehrformeln:<br>r aus u: r = u / (2π)<br>r aus A: r = √(A/π)<br>d = 2r immer!</div>
+  <table class="tbl">
+    <tr><th>r</th><th>d</th><th>u</th><th>A</th></tr>
+    <tr><td class="emp">7,5 cm</td><td>15,0 cm</td><td>47,1 cm</td><td>176,7 cm²</td></tr>
+    <tr><td>15,0 mm</td><td class="emp">30,0 mm</td><td>94,2 mm</td><td>706,9 mm²</td></tr>
+    <tr><td>1,27 cm</td><td>2,5 cm</td><td class="emp">8,0 cm</td><td>5,1 cm²</td></tr>
+    <tr><td>56,4 cm</td><td>112,8 cm</td><td>354,2 cm</td><td class="emp">10000 cm² = 1 m²</td></tr>
+  </table>
+</div>`,
+
+sektor:`${KBK}
+<div class="hero" style="background:linear-gradient(135deg,#1a1208,#d97706)">
+  <h2>🥧 Kreissektor</h2><p>Bogenlänge & Flächeninhalt des Ausschnitts</p><div class="hi">🥧</div>
+</div>
+<div class="card">
+  <div class="ch">📌 Formeln</div>
+  <div class="fml-grid">
+    <div class="fml-card"><div class="fml-label">Bogenlänge b</div><div class="fml-expr">b = 2πr · α/360°</div><div class="fml-desc">α = Mittelpunktswinkel in Grad</div></div>
+    <div class="fml-card"><div class="fml-label">Fläche A_S</div><div class="fml-expr">A_S = πr² · α/360°</div><div class="fml-desc">auch: A_S = b·r/2</div></div>
+  </div>
+  <div class="cv-wrap"><canvas id="cv-sektor" height="220"></canvas></div>
+</div>
+<div class="card">
+  <div class="ch">✏️ Beispiel Aufgabe 2a</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Ähnlicher Typ wie in der Probearbeit (nicht identisch)</div>
+    <div class="aufg-q" style="font-size:11px">Kreisausschnitt mit α = 120°, r = 9 cm. Berechne b und A_S.</div>
+    <div class="bsp-steps">b = 2·π·9·120/360 = 2·π·9·(1/3) ≈ 18,85 cm<br>A_S = π·81·120/360 = π·81·(1/3) ≈ 84,82 cm²</div>
+  </div>
+</div>
+<div class="card">
+  <div class="ch">✏️ Beispiel — r aus A_S berechnen (Typ Aufgabe 2b)</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Wenn b und r gegeben, A_S gesucht</div>
+    <div class="aufg-q" style="font-size:11px">b = 8,4 cm, r = 4,5 cm. Was ist A_S?</div>
+    <div class="bsp-steps">A_S = b · r / 2 = 8,4 · 4,5 / 2 = <strong style="color:var(--green)">18,9 cm²</strong></div>
+  </div>
+</div>`,
+
+tabelle:`${KBK}
+<div class="hero" style="background:linear-gradient(135deg,#0a1a2e,#0369a1)">
+  <h2>📊 Tabelle ausfüllen</h2><p>Kreissektoren — r, α, b, A</p><div class="hi">📊</div>
+</div>
+<div class="card">
+  <div class="ch">📌 Strategie</div>
+  <div class="steps">
+    <div class="step"><span class="sn">1</span><div class="st2">Welche 2 Werte sind gegeben?</div></div>
+    <div class="step"><span class="sn">2</span><div class="st2">Ist r gegeben? → direkt b und A berechnen</div></div>
+    <div class="step"><span class="sn">3</span><div class="st2">Nur A und α gegeben? → r = √(A · 360 / (π · α))</div></div>
+    <div class="step"><span class="sn">4</span><div class="st2">Nur b und α gegeben? → r = b · 360 / (2π · α)</div></div>
+  </div>
+</div>
+<div class="card">
+  <div class="ch">📊 Musterlösung (Schulbuch Tabelle)</div>
+  <table class="tbl">
+    <tr><th>r</th><th>α</th><th>b</th><th>A</th></tr>
+    <tr><td class="emp">3,5 m</td><td class="emp">200°</td><td>12,22 m</td><td>21,38 m²</td></tr>
+    <tr><td>7,24 cm</td><td class="emp">95°</td><td>12,0 cm</td><td>43,4 cm²</td></tr>
+    <tr><td class="emp">3,5 m</td><td>26,2°</td><td class="emp">1,6 m</td><td>2,8 m²</td></tr>
+    <tr><td>4,7 m</td><td class="emp">350°</td><td class="emp">28,7 m</td><td>69,3 m²</td></tr>
+  </table>
+  <div class="box b" style="margin-top:9px">💡 Schritt für Schritt: a) r=3,5, α=200 → b=2π·3,5·200/360≈12,22 ✓</div>
+</div>`,
+
+aufg:`${KBK}
+<div class="hero" style="background:linear-gradient(135deg,#1a0a2e,#7c3aed)">
+  <h2>✏️ Kreis-Aufgaben Typen</h2><p>Alle Typen aus der Probearbeit</p><div class="hi">✏️</div>
+</div>
+<div class="card">
+  <div class="ch">🏛️ Typ: Pflastersteine (Aufgabe 3)</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Ähnlicher Typ (nicht identisch)</div>
+    <div class="aufg-q" style="font-size:11px">Runder Platz d=20m, Baum in Mitte r=3m. Wie viel m² Pflaster?</div>
+    <div class="bsp-steps">A_gesamt = π · 10² ≈ 314,16 m²<br>A_Baum = π · 3² ≈ 28,27 m²<br>A_Pflaster = 314,16 - 28,27 = <strong style="color:var(--green)">285,89 m²</strong></div>
+  </div>
+</div>
+<div class="card">
+  <div class="ch">🔧 Typ: Deckel aus Blech (Aufgabe 4)</div>
+  <div class="bsp-box">
+    <div class="bsp-title">Ähnlicher Typ</div>
+    <div class="aufg-q" style="font-size:11px">Quadrat 40cm×40cm, 4×4=16 Kreisdeckel r=5cm. Abfall in %?</div>
+    <div class="bsp-steps">A_Quadrat = 1600 cm²<br>A_Deckel = 16 · π · 25 ≈ 1256,6 cm²<br>Abfall = 1600 - 1256,6 = 343,4 cm²<br>% = 343,4 / 1600 · 100 ≈ <strong style="color:var(--green)">21,5 %</strong></div>
+  </div>
+</div>`,
+};
+
+// ═════════ PROBEARBEIT AUFGABEN ═════════
 const AUFG_SETS=[
-  {id:'maibaum', i:'🌲', n:'Maibaum', sub:'Höhe mit Schatten bestimmen'},
-  {id:'dorf', i:'🏘️', n:'Dorf am See', sub:'Entfernung über Wasser messen'},
-  {id:'turm', i:'🗼', n:'Turmhöhe', sub:'Mit Lineal messen'},
-  {id:'mast', i:'📡', n:'Mast hinter Mauer', sub:'Sichtbarkeitsaufgabe'},
-  {id:'strasse', i:'🚗', n:'Straße im Gebirge', sub:'Steigung & Höhe'},
-  {id:'blatt', i:'📝', n:'Arbeitsblatt-Aufgaben', sub:'Wie im Schulheft'},
+  {id:'eiffel',i:'🗼',n:'Eiffelturm-Aufgabe',sub:'2. Strahlensatz'},
+  {id:'mond',i:'🌙',n:'Mond & Sonne',sub:'Astronomie'},
+  {id:'fluss',i:'🌊',n:'Breite des Flusses',sub:'X-Figur'},
+  {id:'maibaum',i:'🌲',n:'Maibaum',sub:'Schatten & Höhe'},
+  {id:'kreis1',i:'📐',n:'Kreis-Tabelle',sub:'Aufgabe 1'},
+  {id:'kreis2',i:'🥧',n:'Kreissektoren',sub:'b und A_S'},
+  {id:'platz',i:'🏛️',n:'Platz pflastern',sub:'Kreisfläche'},
+  {id:'blech',i:'🔧',n:'Deckel aus Blech',sub:'Prozentteil'},
 ];
 function buildAufgGrid(){
   document.getElementById('aufg-grid').innerHTML=AUFG_SETS.map(a=>`
     <div class="tc" onclick="openAufg('${a.id}')">
-      <div class="tc-n">Aufgabe</div>
+      <div class="tc-n">${a.sub}</div>
       <div class="tc-i">${a.i}</div>
       <div class="tc-t">${a.n}</div>
-      <div style="font-size:9px;color:var(--muted);font-weight:700;margin-top:3px">${a.sub}</div>
     </div>`).join('');
+}
+function openAufg(id){
+  document.getElementById('aufg-picker').style.display='none';
+  document.getElementById('aufg-detail').style.display='block';
+  document.getElementById('aufg-content').innerHTML=AUFG_CONTENT[id]||'';
+  setTimeout(()=>drawAufgCanvas(id),80);
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 function goBackAufg(){
   document.getElementById('aufg-picker').style.display='block';
   document.getElementById('aufg-detail').style.display='none';
 }
-function openAufg(id){
-  document.getElementById('aufg-picker').style.display='none';
-  document.getElementById('aufg-detail').style.display='block';
-  document.getElementById('aufg-content').innerHTML=AUFG_CONTENT[id]||'<p>Kommt bald!</p>';
-  setTimeout(()=>drawAufgCanvases(id),80);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-const AUFG_BK=`<button class="back" onclick="goBackAufg()">← Zurück</button>`;
+const ABK=`<button class="back" onclick="goBackAufg()">← Zurück</button>`;
 
-function checkAufgabe(inputId,correct,tolerance,fbId,pts_val){
+function checkA(inputId,correct,tolerance,fbId,ptsV){
   const inp=document.getElementById(inputId);
   const fb=document.getElementById(fbId);
   if(!inp)return;
   const v=parseFloat(inp.value.replace(',','.'));
-  if(isNaN(v)){fb.textContent='Bitte eine Zahl eingeben!';fb.className='afb no';return;}
+  if(isNaN(v)){fb.textContent='Zahl eingeben!';fb.className='afb no';return;}
   if(Math.abs(v-correct)<=tolerance){
-    inp.classList.add('ok'); fb.textContent='✅ Richtig! Sehr gut! 🎉'; fb.className='afb ok';
-    inp.disabled=true;
-    pts+=pts_val; document.getElementById('pts').textContent=pts; sv();
-    toast('+'+pts_val+' Punkte! ⭐');
-  } else {
-    inp.classList.add('no');
-    fb.innerHTML='❌ Noch nicht — Tipp: <strong>'+correct+'</strong> ist die Lösung. Schau nochmal auf die Skizze!';
-    fb.className='afb no';
+    inp.classList.add('ok');fb.textContent='✅ Richtig! 🎉';fb.className='afb ok';
+    inp.disabled=true;pts+=ptsV;document.getElementById('pts').textContent=pts;sv();toast('+'+ptsV+' Punkte!');
+  }else{
+    inp.classList.add('no');fb.innerHTML='❌ Tipp: Das Ergebnis liegt bei <strong>'+correct+'</strong>';fb.className='afb no';
     setTimeout(()=>{inp.classList.remove('no');inp.value='';fb.textContent='';},3500);
   }
 }
-
-function toggleLoes(id){
+function toggleL(id){
   const box=document.getElementById(id);
   const btn=document.getElementById(id+'-btn');
   const show=box.style.display==='none'||!box.style.display;
   box.style.display=show?'block':'none';
-  btn.textContent=show?'🔼 Lösung verbergen':'🔍 Lösung anzeigen';
+  btn.textContent=show?'🔼 Verbergen':'🔍 Lösung';
+}
+
+function drawAufgCanvas(id){
+  if(id==='eiffel')drawEiffelCanvas();
+  if(id==='fluss')drawFlussCanvas();
+  if(id==='maibaum')drawMaibaumCanvas();
+}
+function drawEiffelCanvas(){
+  const cv=document.getElementById('cv-eiffel');if(!cv)return;
+  const W=cv.offsetWidth||340,H=170;cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  cline(ctx,0,H-20,W,H-20,C.dim,1.5);
+  const px=40,ph=30,tx=W-60,th=110;
+  ctx.fillStyle='rgba(248,113,113,.2)';ctx.fillRect(px-5,H-20-ph,10,ph);ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.strokeRect(px-5,H-20-ph,10,ph);
+  ctx.fillStyle='rgba(251,191,36,.2)';ctx.fillRect(tx-12,H-20-th,24,th);ctx.strokeStyle=C.yellow;ctx.lineWidth=2;ctx.strokeRect(tx-12,H-20-th,24,th);
+  cline(ctx,px,H-20-ph,tx,H-20-th,C.muted,1.5,[4,3]);
+  ctxt(ctx,'A',px-8,H-8,C.red,11);ctxt(ctx,'B',px+30,H-8,C.red,11);ctxt(ctx,'C',W-75,H-8,C.yellow,11);
+  ctxt(ctx,'2,5m',px+3,H-20-ph/2,C.red,10);
+  ctxt(ctx,'h',tx+15,H-20-th/2,C.yellow,12);
+  ctxt(ctx,'5m',(px+px+30)/2-8,H-10,C.muted,10);
+  ctxt(ctx,'596m',(px+30+tx-12)/2-18,H-10,C.muted,10);
+}
+function drawFlussCanvas(){
+  const cv=document.getElementById('cv-fluss');if(!cv)return;
+  const W=cv.offsetWidth||340,H=200;cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(45,212,191,.06)';ctx.fillRect(W*0.3,0,W*0.4,H);
+  ctx.strokeStyle='rgba(45,212,191,.3)';ctx.lineWidth=1;
+  ctx.strokeRect(W*0.3,0,W*0.4,H);
+  ctxt(ctx,'Fluss',W*0.4,H/2,C.teal,12);
+  const A={x:20,y:H-30},B={x:W-20,y:H-30};
+  const Z={x:W/2-15,y:20};
+  circ(ctx,A.x,A.y,C.blue,7);circ(ctx,B.x,B.y,C.orange,7);circ(ctx,Z.x,Z.y,C.green,7);
+  cline(ctx,A.x,A.y,Z.x,Z.y,C.dim,1.5);
+  cline(ctx,B.x,B.y,Z.x,Z.y,C.dim,1.5);
+  const sx=(A.x+B.x)/2,sy=(A.y+B.y)/2;
+  circ(ctx,sx,sy,C.yellow,6);ctxt(ctx,'S',sx+7,sy+4,C.yellow,11);
+  ctxt(ctx,'A',A.x-15,A.y+4,C.blue,11);ctxt(ctx,'B',B.x+6,B.y+4,C.orange,11);ctxt(ctx,'Z',Z.x+7,Z.y,C.green,11);
+}
+function drawMaibaumCanvas(){
+  const cv=document.getElementById('cv-maibaum');if(!cv)return;
+  const W=cv.offsetWidth||340,H=170;cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  cline(ctx,0,H-20,W,H-20,C.dim,1.5);
+  cline(ctx,10,15,W-20,H-20,C.yellow,2,[5,4]);
+  const bx=45,bh=110;
+  ctx.fillStyle='rgba(34,197,94,.15)';ctx.fillRect(bx-8,H-20-bh,16,bh);ctx.strokeStyle=C.green;ctx.lineWidth=2;ctx.strokeRect(bx-8,H-20-bh,16,bh);
+  ctxt(ctx,'x',bx-22,H-20-bh/2,C.green,13);
+  const jx=W-80,jh=38;
+  ctx.fillStyle='rgba(248,113,113,.2)';ctx.fillRect(jx-5,H-20-jh,10,jh);ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.strokeRect(jx-5,H-20-jh,10,jh);
+  ctxt(ctx,'1,62m',jx+9,H-20-jh/2,C.red,10);
+  cline(ctx,bx,H-18,W-20,H-18,C.muted,1);ctxt(ctx,'8m',(bx+W-20)/2-12,H-8,C.muted,10);
+  cline(ctx,jx,H-13,W-20,H-13,C.orange,1.5);ctxt(ctx,'2,9m',(jx+W-20)/2-12,H-3,C.orange,10);
 }
 
 const AUFG_CONTENT={
-maibaum:`${AUFG_BK}
-<div class="hero" style="background:linear-gradient(135deg,#065f46,#059669)">
-  <h2>🌲 Maibaum — wie hoch ist er?</h2><p>Aus deinem Schulbuch — mit vollständiger Lösung!</p><div class="hi">🌲</div>
+eiffel:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#1a1208,#ca8a04)">
+  <h2>🗼 Eiffelturm — Wie hoch ist er?</h2><p>2. Strahlensatz · aus der Probearbeit</p>
 </div>
-
 <div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabentext</div></div>
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe</div></div>
   <div class="aufg-body">
-    <div class="aufg-q">Jana will die Höhe des Maibaums bestimmen. Der Schatten des Baumes ist <strong>8 m</strong> lang. Jana ist <strong>1,60 m</strong> groß und stellt sich so, dass ihr Schatten genau am Ende des Baumschattens endet. Ihr Schatten ist <strong>2 m</strong> lang. Wie hoch ist der Maibaum?</div>
-    <canvas id="cv-maibaum" height="170" style="width:100%;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;display:block;margin:8px 0"></canvas>
-    <div class="leg" style="margin-bottom:8px">
-      <div class="leg-item"><div class="leg-dot" style="background:#2563eb"></div><span>Maibaum (Höhe x)</span></div>
-      <div class="leg-item"><div class="leg-dot" style="background:#ea580c"></div><span>Jana (1,60 m)</span></div>
-      <div class="leg-item"><div class="leg-dot" style="background:#fbbf24"></div><span>Sonnenstrahlen</span></div>
-    </div>
+    <div class="aufg-q">Ein 2,5 m großer Mensch steht 5 m vom Messpunkt A entfernt. Der Eiffelturm steht 596 m von A entfernt. Berechne die Höhe h des Eiffelturms.</div>
+    <canvas id="cv-eiffel" height="170" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;margin:8px 0"></canvas>
   </div>
 </div>
-
 <div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📐 Schritt 0 — Welchen Satz nehme ich?</div></div>
+  <div class="aufg-head"><div class="aufg-titel">✏️ Deine Rechnung</div></div>
   <div class="aufg-body">
-    <div class="box y">Die Parallelstrecken sind <strong>Janas Höhe (1,60m)</strong> und die <strong>Baumhöhe (x)</strong>.<br>Der Scheitel S ist der Sonnenstrahl-Schnittpunkt.<br>→ Wir messen vom Scheitel aus → <strong>2. Strahlensatz!</strong></div>
-    <div class="formel" style="background:#065f46">x / 8 = 1,60 / 2<div class="sub">Baumhöhe/Baumschatten = Janas Höhe/Janas Schatten</div></div>
-  </div>
-</div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">✏️ Deine Berechnung</div></div>
-  <div class="aufg-body">
-    <div style="font-size:12px;font-weight:800;margin-bottom:7px">Rechne: x = 1,60 · 8 / 2 = ?</div>
-    <div class="aufg-inp-row">
-      <label>x =</label>
-      <input class="ainp" id="mai-x" type="number" step="0.01" placeholder="? m">
-      <span style="font-size:12px;font-weight:800">m</span>
-      <button class="achk" onclick="checkAufgabe('mai-x',6.4,0.05,'mai-fb',20)">Prüfen</button>
-    </div>
-    <div class="afb" id="mai-fb"></div>
-    <button class="atipp" onclick='mAsk("Bei der Maibaum-Aufgabe weiß ich: Schatten=8m, Jana=1,60m, Janas Schatten=2m. Gib mir einen Tipp wie ich x berechne!")'>🤖 Moxs fragen</button>
-    <button class="loes-btn" id="mai-loes-btn" onclick="toggleLoes('mai-loes')">🔍 Lösung anzeigen</button>
-    <div class="loes-box" id="mai-loes">
-      x/8 = 1,60/2<br>
-      x/8 = 0,8 &nbsp;|·8<br>
-      x = 0,8 · 8 = <strong>6,4 m</strong><br><br>
-      🌲 Der Maibaum ist <strong>6,4 m</strong> hoch.
-    </div>
-  </div>
-</div>`,
-
-dorf:`${AUFG_BK}
-<div class="hero" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">
-  <h2>🏘️ Dorf am See</h2><p>Entfernung über Wasser bestimmen</p><div class="hi">🏘️</div>
-</div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabentext</div></div>
-  <div class="aufg-body">
-    <div class="aufg-q">D-Dorf und E-Dorf sind durch einen See getrennt. Bekannt ist:<br>
-    • A-Dorf zu B-Dorf: <strong>7 km</strong><br>
-    • A-Dorf zu D-Dorf: <strong>17 km</strong><br>
-    • B-Dorf zu C-Dorf: <strong>9 km</strong><br>
-    Gesucht: Entfernung D-Dorf zu E-Dorf (= x km)</div>
-    <canvas id="cv-dorf" height="200" style="width:100%;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;display:block;margin:8px 0"></canvas>
-  </div>
-</div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📐 Lösung Schritt für Schritt</div></div>
-  <div class="aufg-body">
-    <div class="box b">Scheitel S = A-Dorf. Die Strecken AB=7 und AD=17 liegen auf einem Strahl. BC=9 und DE=x auf dem anderen (parallel).<br>→ <strong>3. Strahlensatz:</strong> AB/AD = BC/DE</div>
-    <div class="formel">7 / 17 = 9 / x</div>
-    <div class="aufg-inp-row">
-      <label>x =</label>
-      <input class="ainp" id="dorf-x" type="number" step="0.01" placeholder="? km">
-      <span style="font-size:12px;font-weight:800">km</span>
-      <button class="achk" onclick="checkAufgabe('dorf-x',21.86,0.1,'dorf-fb',20)">Prüfen</button>
-    </div>
-    <div class="afb" id="dorf-fb"></div>
-    <button class="atipp" onclick='mAsk("Dorf-Aufgabe: AB=7, AD=17, BC=9. Ich nutze den 3. Strahlensatz. Wie forme ich 7/17=9/x nach x um?")'>🤖 Moxs fragen</button>
-    <button class="loes-btn" id="dorf-loes-btn" onclick="toggleLoes('dorf-loes')">🔍 Lösung anzeigen</button>
-    <div class="loes-box" id="dorf-loes">
-      7/17 = 9/x &nbsp;|·x<br>
-      7x/17 = 9 &nbsp;|·17<br>
-      7x = 9·17 = 153<br>
-      x = 153/7 ≈ <strong>21,86 km</strong><br><br>
-      🏘️ D-Dorf und E-Dorf sind ca. <strong>21,86 km</strong> voneinander entfernt.
-    </div>
-  </div>
-</div>`,
-
-turm:`${AUFG_BK}
-<div class="hero" style="background:linear-gradient(135deg,#713f12,#ca8a04)">
-  <h2>🗼 Turmhöhe bestimmen</h2><p>Mit Lineal und ausgestrecktem Arm</p><div class="hi">🗼</div>
-</div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabentext</div></div>
-  <div class="aufg-body">
-    <div class="aufg-q">Man hält ein Lineal mit ausgestrecktem Arm (60 cm Abstand zum Auge) senkrecht hoch. Die scheinbare Höhe des Turms beträgt <strong>23 cm</strong>. Man steht <strong>220 m</strong> vom Turm entfernt. Die Augenhöhe ist <strong>1,70 m</strong>. Wie hoch ist der Turm?</div>
-    <canvas id="cv-turm" height="160" style="width:100%;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;display:block;margin:8px 0"></canvas>
-  </div>
-</div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">✏️ Berechnung a) Turmhöhe</div></div>
-  <div class="aufg-body">
-    <div class="formel">h / 220 = 0,23 / 0,60</div>
+    <div class="box b" style="font-size:11px">Tipp: 2. Strahlensatz — SA/SB = 2,5/h<br>SA = 5m, SB = 5 + 596 = 601m</div>
     <div class="aufg-inp-row">
       <label>h =</label>
-      <input class="ainp" id="turm-h" type="number" step="0.1" placeholder="? m">
-      <span style="font-size:12px;font-weight:800">m (ohne Augenhöhe)</span>
-      <button class="achk" onclick="checkAufgabe('turm-h',84.33,0.5,'turm-fb',15)">Prüfen</button>
+      <input class="ainp" id="eiffel-h" type="number" step="0.1" placeholder="? m">
+      <span style="font-size:12px;font-weight:700;color:var(--muted)">m</span>
+      <button class="achk" onclick="checkA('eiffel-h',300.5,2,'eiffel-fb',20)">Prüfen</button>
     </div>
-    <div class="afb" id="turm-fb"></div>
-    <div style="font-size:12px;font-weight:800;color:var(--muted);margin-top:5px">+ 1,70 m Augenhöhe dazuzählen!</div>
-    <button class="loes-btn" id="turm-loes-btn" onclick="toggleLoes('turm-loes')">🔍 Lösung anzeigen</button>
-    <div class="loes-box" id="turm-loes">
-      h/220 = 0,23/0,60 &nbsp;|·220<br>
-      h = (0,23·220)/0,60 = 84,33 m<br>
-      + 1,70 m Augenhöhe<br>
-      Turm ≈ <strong>86 m</strong> hoch
-    </div>
+    <div class="afb" id="eiffel-fb"></div>
+    <button class="atipp" onclick='mAsk("Eiffelturm: Mensch 2,5m steht 5m weg. Turm ist 601m weg. 2. Strahlensatz. Wie rechne ich h?")'>🤖 KI-Tipp</button>
+    <button class="loes-btn" id="eiffel-loes-btn" onclick="toggleL('eiffel-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="eiffel-loes">2,5 / h = 5 / 601<br>h = 2,5 · 601 / 5<br>h = <strong>300,5 m</strong></div>
   </div>
 </div>`,
 
-mast:`${AUFG_BK}
-<div class="hero" style="background:linear-gradient(135deg,#1e3a8a,#7c3aed)">
-  <h2>📡 Mast hinter der Mauer</h2><p>Wie hoch ist der Mast?</p><div class="hi">📡</div>
+mond:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#0a0a1e,#1d1d4e)">
+  <h2>🌙 Mond & Sonne</h2><p>Astronomie mit Strahlensatz</p>
 </div>
-
 <div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabentext (Aufgabe 25)</div></div>
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe 2</div></div>
   <div class="aufg-body">
-    <div class="aufg-q">Hinter einer Mauer steht ein Mast. Seine Spitze ist vom Punkt S aus gerade noch sichtbar.<br>
-    • S bis Mauer: <strong>4,5 m</strong><br>
-    • Mauer Breite: <strong>2,0 m</strong><br>
-    • Mauer bis Mast: <strong>11,5 m</strong><br>
-    • Mauerhöhe: <strong>10,5 m</strong><br>
-    a) Wie hoch ist der Mast?</div>
-    <canvas id="cv-mast" height="180" style="width:100%;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;display:block;margin:8px 0"></canvas>
+    <div class="aufg-q">Mond-Durchmesser = 3476 km (Radius = 1738 km). Abstand Erde-Mond = 384.400 km. Abstand Erde-Sonne = 150.000.000 km. Berechne den Sonnendurchmesser.</div>
+    <div class="box b" style="font-size:11px">Mondradius / Mondabstand = Sonnenradius / Sonnenabstand</div>
   </div>
 </div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">✏️ Berechnung — Teil a)</div></div>
-  <div class="aufg-body">
-    <div class="box b">S ist der Scheitel. Der Blickstrahl geht von S über die Maueroberkante zur Mastspitze.<br>Abstand S-Mauer = 4,5m, Mauerhöhe = 10,5m<br>Abstand S-Mast = 4,5+2,0+11,5 = <strong>18,0 m</strong></div>
-    <div class="formel">t / 18 = 10,5 / 4,5</div>
-    <div class="aufg-inp-row">
-      <label>t =</label>
-      <input class="ainp" id="mast-t" type="number" step="0.1" placeholder="? m">
-      <span style="font-size:12px;font-weight:800">m</span>
-      <button class="achk" onclick="checkAufgabe('mast-t',42,0.1,'mast-fb',20)">Prüfen</button>
-    </div>
-    <div class="afb" id="mast-fb"></div>
-    <button class="atipp" onclick='mAsk("Mast-Aufgabe: S zur Mauer=4,5m, Mauerhöhe=10,5m, S zum Mast=18m. Ich suche die Masthöhe t. Wie genau setze ich das in den Strahlensatz ein?")'>🤖 Moxs fragen</button>
-    <button class="loes-btn" id="mast-loes-btn" onclick="toggleLoes('mast-loes')">🔍 Lösung anzeigen</button>
-    <div class="loes-box" id="mast-loes">
-      t/18 = 10,5/4,5 &nbsp;|·18<br>
-      t = (10,5/4,5)·18 = 42 m<br><br>
-      📡 Der Mast ist <strong>42 m</strong> hoch.
-    </div>
-  </div>
-</div>`,
-
-strasse:`${AUFG_BK}
-<div class="hero" style="background:linear-gradient(135deg,#14532d,#16a34a)">
-  <h2>🚗 Straße im Gebirge</h2><p>Steigung und Höhe berechnen</p><div class="hi">⛰️</div>
-</div>
-
-<div class="aufg">
-  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe 5</div></div>
-  <div class="aufg-body">
-    <div class="aufg-q">12% Steigung bedeutet: Auf <strong>100 m</strong> Horizontaldistanz steigt die Straße um <strong>12 m</strong>.<br>Die Straße ist <strong>2,3 km = 2300 m</strong> lang.<br>Wie hoch steigt sie insgesamt auf?</div>
-    <canvas id="cv-strasse" height="140" style="width:100%;border-radius:8px;border:2px solid var(--brd);background:#f8f9ff;display:block;margin:8px 0"></canvas>
-  </div>
-</div>
-
 <div class="aufg">
   <div class="aufg-head"><div class="aufg-titel">✏️ Berechnung</div></div>
   <div class="aufg-body">
-    <div class="formel">0,1 / 0,012 · h = 2,3<br><div class="sub">Verhältnis: 12m/100m = 0,12 → Steigung</div></div>
-    <div class="box y">Tipp: h/2300 = 12/100<br>→ h = 12 · 2300 / 100 = ?</div>
+    <div class="bsp-box">
+      <div class="bsp-title">Formelansatz</div>
+      <div class="bsp-steps">1738 / 384400 = r_Sonne / 150000000<br>r_Sonne = 1738 · 150000000 / 384400</div>
+    </div>
     <div class="aufg-inp-row">
-      <label>h =</label>
-      <input class="ainp" id="str-h" type="number" step="1" placeholder="? m">
-      <span style="font-size:12px;font-weight:800">m</span>
-      <button class="achk" onclick="checkAufgabe('str-h',276,1,'str-fb',15)">Prüfen</button>
+      <label>r_S =</label>
+      <input class="ainp" id="mond-r" type="number" step="1" placeholder="? km">
+      <span style="font-size:12px;font-weight:700;color:var(--muted)">km</span>
+      <button class="achk" onclick="checkA('mond-r',678397,5000,'mond-fb',20)">Prüfen</button>
     </div>
-    <div class="afb" id="str-fb"></div>
-    <button class="loes-btn" id="str-loes-btn" onclick="toggleLoes('str-loes')">🔍 Lösung anzeigen</button>
-    <div class="loes-box" id="str-loes">
-      h/2300 = 12/100<br>
-      h = 12·2300/100 = <strong>276 m</strong><br><br>
-      ⛰️ Die Straße steigt um <strong>276 m</strong> an.
-    </div>
+    <div class="afb" id="mond-fb"></div>
+    <button class="loes-btn" id="mond-loes-btn" onclick="toggleL('mond-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="mond-loes">r_S = 1738 · 150000000 / 384400<br>r_S ≈ 678.397 km<br>d_Sonne ≈ <strong>1.356.794 km</strong></div>
   </div>
 </div>`,
 
-blatt:`${AUFG_BK}
-<div class="hero" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">
-  <h2>📝 Arbeitsblatt-Aufgaben</h2><p>Genau wie auf deinem Blatt — 1 bis 12!</p><div class="hi">📝</div>
+fluss:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#0a1e2e,#0369a1)">
+  <h2>🌊 Breite des Flusses</h2><p>X-Figur — 1. Strahlensatz über Kreuz</p>
 </div>
-
-${[
-  {nr:1,sa:'3,9',ab:'x',sc:'2,6',cd:'2',cor:2,hint:'3,9/x=2,6/2 → x = 3,9·2/2,6 = 3 → nein, 2,6/2=1,3 → 3,9/x=1,3 → x=3'},
-  {nr:2,sa:'7',ab:'x',sc:'25,2',cd:'8,4',cor:21.6,hint:'x/25,2 = 7/8,4 → x = 7·25,2/8,4 = 21'},
-  {nr:4,sa:'19,5',ab:'x',sc:'7,5',cd:'5',cor:13,hint:'19,5/x = 7,5/5 = 1,5 → x = 19,5/1,5 = 13'},
-  {nr:5,sa:'x',ab:'2',sc:'3,75',cd:'1,5',cor:5,hint:'x/2 = 3,75/1,5 = 2,5 → x = 5'},
-  {nr:6,sa:'x',ab:'7,5',sc:'24,3',cd:'13,5',cor:13.5,hint:'x/7,5 = 24,3/13,5 = 1,8 → x = 13,5'},
-  {nr:9,sa:'x',ab:'24',sc:'17',cd:'9',cor:45.33,hint:'x/24 = 17/9 → x = 17·24/9 ≈ 45,33'},
-].map(a=>`
-<div class="aufg" style="margin-bottom:10px">
-  <div class="aufg-head">
-    <div class="aufg-titel">Aufgabe ${a.nr}</div>
-    <div class="aufg-pts">SA=${a.sa} · AB=${a.ab} · SC=${a.sc} · CD=${a.cd}</div>
-  </div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe</div></div>
   <div class="aufg-body">
-    <div class="aufg-q">Berechne x mit dem 1. Strahlensatz: SA/AB = SC/CD</div>
-    <div class="aufg-inp-row">
-      <label>x =</label>
-      <input class="ainp" id="bl${a.nr}-x" type="number" step="0.01" placeholder="? cm">
-      <span style="font-size:12px;font-weight:800">cm</span>
-      <button class="achk" onclick="checkAufgabe('bl${a.nr}-x',${a.cor},0.1,'bl${a.nr}-fb',10)">Prüfen</button>
-    </div>
-    <div class="afb" id="bl${a.nr}-fb"></div>
-    <button class="atipp" onclick='mAsk("Aufgabe ${a.nr}: SA=${a.sa}, AB=${a.ab}, SC=${a.sc}, CD=${a.cd}. x=? Gib mir nur einen Tipp!")'>🤖 Moxs fragen</button>
-    <button class="loes-btn" id="bl${a.nr}-loes-btn" onclick="toggleLoes('bl${a.nr}-loes')">🔍 Lösung</button>
-    <div class="loes-box" id="bl${a.nr}-loes">${a.hint}<br><strong>x = ${a.cor}</strong></div>
+    <div class="aufg-q">AZ = 78 m, ZC = 35 m, BC = 20 m. Bestimme die Breite b des Flusses (= AZ entspricht der Seite). Gib an, welchen Strahlensatz du anwendest.</div>
+    <canvas id="cv-fluss" height="200" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;margin:8px 0"></canvas>
+    <div class="box p" style="font-size:11px">S liegt in der Mitte → <strong>X-Figur!</strong><br>Nutze: SA/SB = SC/SD (2. Strahlensatz)</div>
   </div>
-</div>`).join('')}`,
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Berechnung</div></div>
+  <div class="aufg-body">
+    <div class="bsp-box">
+      <div class="bsp-title">Ansatz</div>
+      <div class="bsp-steps">AZ/ZC = AB/BC → 78/35 = b/20</div>
+    </div>
+    <div class="aufg-inp-row">
+      <label>b =</label>
+      <input class="ainp" id="fluss-b" type="number" step="0.1" placeholder="? m">
+      <span style="font-size:12px;font-weight:700;color:var(--muted)">m</span>
+      <button class="achk" onclick="checkA('fluss-b',44.57,0.2,'fluss-fb',20)">Prüfen</button>
+    </div>
+    <div class="afb" id="fluss-fb"></div>
+    <button class="atipp" onclick='mAsk("Fluss-Aufgabe X-Figur: AZ=78, ZC=35, BC=20. Wie berechne ich AB (Breite)?")'>🤖 KI-Tipp</button>
+    <button class="loes-btn" id="fluss-loes-btn" onclick="toggleL('fluss-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="fluss-loes">78/35 = b/20<br>b = 78 · 20 / 35<br>b ≈ <strong>44,57 m</strong><br><br>Es gilt der 1. Strahlensatz (X-Figur).</div>
+  </div>
+</div>`,
+
+maibaum:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#0a2216,#15803d)">
+  <h2>🌲 Maibaum — Höhe bestimmen</h2><p>2. Strahlensatz</p>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe</div></div>
+  <div class="aufg-body">
+    <div class="aufg-q">Ein 1,62 m großer Mensch wirft einen 2,9 m langen Schatten. Zur gleichen Zeit wirft ein Turm einen 20 m langen Schatten. Wie hoch ist der Turm?</div>
+    <canvas id="cv-maibaum" height="170" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;margin:8px 0"></canvas>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Berechnung</div></div>
+  <div class="aufg-body">
+    <div class="bsp-box">
+      <div class="bsp-title">Formelansatz (2. Strahlensatz)</div>
+      <div class="bsp-steps">Höhe / Schatten = Höhe / Schatten<br>1,62 / 2,9 = h / 20</div>
+    </div>
+    <div class="aufg-inp-row">
+      <label>h =</label>
+      <input class="ainp" id="mai-h" type="number" step="0.01" placeholder="? m">
+      <span style="font-size:12px;font-weight:700;color:var(--muted)">m</span>
+      <button class="achk" onclick="checkA('mai-h',11.17,0.05,'mai-fb',20)">Prüfen</button>
+    </div>
+    <div class="afb" id="mai-fb"></div>
+    <button class="atipp" onclick='mAsk("Maibaum: Mensch 1,62m groß, Schatten 2,9m. Turm-Schatten 20m. Wie berechne ich h?")'>🤖 KI-Tipp</button>
+    <button class="loes-btn" id="mai-loes-btn" onclick="toggleL('mai-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="mai-loes">1,62 / 2,9 = h / 20<br>h = 1,62 · 20 / 2,9<br>h ≈ <strong>11,17 m</strong></div>
+  </div>
+</div>`,
+
+kreis1:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#0a2216,#16a34a)">
+  <h2>📐 Kreis-Tabelle</h2><p>Aufgabe 1 aus der Probearbeit</p>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe — Tabelle ausfüllen</div></div>
+  <div class="aufg-body">
+    <div class="aufg-q">Fülle die Tabelle aus. Runde auf eine Stelle nach dem Komma.</div>
+    <table class="tbl" style="margin-top:9px">
+      <tr><th>r</th><th>d</th><th>u</th><th>A</th></tr>
+      <tr><td>7,5 cm</td><td style="color:var(--yellow)">?</td><td style="color:var(--yellow)">?</td><td style="color:var(--yellow)">?</td></tr>
+      <tr><td style="color:var(--yellow)">?</td><td>30 mm</td><td style="color:var(--yellow)">?</td><td style="color:var(--yellow)">?</td></tr>
+      <tr><td style="color:var(--yellow)">?</td><td style="color:var(--yellow)">?</td><td>8 cm</td><td style="color:var(--yellow)">?</td></tr>
+      <tr><td style="color:var(--yellow)">?</td><td style="color:var(--yellow)">?</td><td style="color:var(--yellow)">?</td><td>1 m²</td></tr>
+    </table>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Zeile 1: r = 7,5 cm → d = ?</div></div>
+  <div class="aufg-body">
+    <div class="aufg-inp-row">
+      <label>d =</label>
+      <input class="ainp" id="k1-d" type="number" step="0.1" placeholder="? cm">
+      <span style="font-size:11px;color:var(--muted)">cm</span>
+      <button class="achk" onclick="checkA('k1-d',15,0.05,'k1-d-fb',10)">Prüfen</button>
+    </div>
+    <div class="afb" id="k1-d-fb"></div>
+    <div class="aufg-inp-row" style="margin-top:9px">
+      <label>u =</label>
+      <input class="ainp" id="k1-u" type="number" step="0.1" placeholder="? cm">
+      <span style="font-size:11px;color:var(--muted)">cm</span>
+      <button class="achk" onclick="checkA('k1-u',47.1,0.2,'k1-u-fb',10)">Prüfen</button>
+    </div>
+    <div class="afb" id="k1-u-fb"></div>
+    <div class="aufg-inp-row" style="margin-top:9px">
+      <label>A =</label>
+      <input class="ainp" id="k1-a" type="number" step="0.1" placeholder="? cm²">
+      <span style="font-size:11px;color:var(--muted)">cm²</span>
+      <button class="achk" onclick="checkA('k1-a',176.7,0.5,'k1-a-fb',10)">Prüfen</button>
+    </div>
+    <div class="afb" id="k1-a-fb"></div>
+    <button class="loes-btn" id="k1-loes-btn" onclick="toggleL('k1-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="k1-loes">d = 2·7,5 = 15 cm<br>u = 2·π·7,5 ≈ 47,1 cm<br>A = π·7,5² ≈ 176,7 cm²</div>
+  </div>
+</div>`,
+
+kreis2:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#1a1208,#d97706)">
+  <h2>🥧 Kreissektoren Aufgabe 2</h2><p>Bogen b und Fläche A_S</p>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe 2a</div></div>
+  <div class="aufg-body">
+    <div class="aufg-q">Berechne den Bogen b zu einem Kreisausschnitt mit α = 108° und r = 16 cm.</div>
+    <div class="formel" style="font-size:13px">b = 2·π·r · α/360°</div>
+    <div class="aufg-inp-row">
+      <label>b =</label>
+      <input class="ainp" id="k2-b" type="number" step="0.01" placeholder="? cm">
+      <span style="font-size:11px;color:var(--muted)">cm</span>
+      <button class="achk" onclick="checkA('k2-b',30.16,0.15,'k2-b-fb',15)">Prüfen</button>
+    </div>
+    <div class="afb" id="k2-b-fb"></div>
+    <button class="loes-btn" id="k2-loes-btn" onclick="toggleL('k2-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="k2-loes">b = 2·π·16·108/360<br>b = 2·π·16·0,3<br>b ≈ <strong>30,16 cm</strong></div>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe 2b</div></div>
+  <div class="aufg-body">
+    <div class="aufg-q">Berechne den Kreisausschnitt mit b = 10,2 cm und r = 5,3 cm.</div>
+    <div class="formel" style="font-size:13px">A_S = b · r / 2</div>
+    <div class="aufg-inp-row">
+      <label>A_S =</label>
+      <input class="ainp" id="k2-as" type="number" step="0.01" placeholder="? cm²">
+      <span style="font-size:11px;color:var(--muted)">cm²</span>
+      <button class="achk" onclick="checkA('k2-as',27.03,0.15,'k2-as-fb',15)">Prüfen</button>
+    </div>
+    <div class="afb" id="k2-as-fb"></div>
+    <button class="loes-btn" id="k2-as-loes-btn" onclick="toggleL('k2-as-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="k2-as-loes">A_S = 10,2 · 5,3 / 2 = <strong>27,03 cm²</strong></div>
+  </div>
+</div>`,
+
+platz:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#0a1a2e,#1d4ed8)">
+  <h2>🏛️ Platz pflastern — Aufgabe 3</h2><p>Kreisfläche mit Abzug</p>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe</div></div>
+  <div class="aufg-body">
+    <div class="aufg-q">Ein kreisrunder Platz mit Durchmesser 18 m soll gepflastert werden. In der Mitte soll ein Baum gepflanzt werden, der eine kreisrunde Fläche mit Radius 2 m benötigt.<br>a) Wie viel m² Pflastersteine werden benötigt?<br>b) Wie hoch sind die Kosten, wenn 1m² Steine 124 € kosten?</div>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Teil a)</div></div>
+  <div class="aufg-body">
+    <div class="box b" style="font-size:11px">A_Pflaster = A_groß − A_Baum<br>r_groß = 9 m, r_Baum = 2 m</div>
+    <div class="aufg-inp-row">
+      <label>A =</label>
+      <input class="ainp" id="platz-a" type="number" step="0.1" placeholder="? m²">
+      <span style="font-size:11px;color:var(--muted)">m²</span>
+      <button class="achk" onclick="checkA('platz-a',241.7,0.5,'platz-a-fb',15)">Prüfen</button>
+    </div>
+    <div class="afb" id="platz-a-fb"></div>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Teil b) Kosten</div></div>
+  <div class="aufg-body">
+    <div class="aufg-inp-row">
+      <label>€ =</label>
+      <input class="ainp" id="platz-k" type="number" step="1" placeholder="? €">
+      <span style="font-size:11px;color:var(--muted)">€</span>
+      <button class="achk" onclick="checkA('platz-k',29971,100,'platz-k-fb',15)">Prüfen</button>
+    </div>
+    <div class="afb" id="platz-k-fb"></div>
+    <button class="loes-btn" id="platz-loes-btn" onclick="toggleL('platz-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="platz-loes">A_groß = π · 81 ≈ 254,5 m²<br>A_Baum = π · 4 ≈ 12,6 m²<br>A_Pflaster = 254,5 - 12,6 ≈ 241,9 m²<br>Kosten = 241,9 · 124 ≈ <strong>29.996 €</strong></div>
+  </div>
+</div>`,
+
+blech:`${ABK}
+<div class="hero" style="background:linear-gradient(135deg,#1a1a0a,#65a30d)">
+  <h2>🔧 Deckel aus Blech — Aufgabe 4</h2><p>Kreisfläche und Prozent</p>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">📖 Aufgabe</div></div>
+  <div class="aufg-body">
+    <div class="aufg-q">Aus einem quadratischen Stück Blech (50 cm × 50 cm) werden kreisförmige Deckel ausgeschnitten. In 5 Reihen liegen jeweils 5 Deckel.<br>a) Berechne die Gesamtfläche der Deckel.<br>b) Wie viel Prozent der Gesamtfläche beträgt der Abfall?</div>
+    <div class="box y" style="font-size:11px">Jeder Deckel-Durchmesser = 50/5 = 10 cm → r = 5 cm<br>25 Deckel insgesamt</div>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Teil a) Gesamtfläche</div></div>
+  <div class="aufg-body">
+    <div class="aufg-inp-row">
+      <label>A =</label>
+      <input class="ainp" id="blech-a" type="number" step="0.1" placeholder="? cm²">
+      <span style="font-size:11px;color:var(--muted)">cm²</span>
+      <button class="achk" onclick="checkA('blech-a',1963.5,2,'blech-a-fb',15)">Prüfen</button>
+    </div>
+    <div class="afb" id="blech-a-fb"></div>
+  </div>
+</div>
+<div class="aufg">
+  <div class="aufg-head"><div class="aufg-titel">✏️ Teil b) Abfall in %</div></div>
+  <div class="aufg-body">
+    <div class="aufg-inp-row">
+      <label>% =</label>
+      <input class="ainp" id="blech-p" type="number" step="0.1" placeholder="? %">
+      <span style="font-size:11px;color:var(--muted)">%</span>
+      <button class="achk" onclick="checkA('blech-p',21.5,0.5,'blech-p-fb',15)">Prüfen</button>
+    </div>
+    <div class="afb" id="blech-p-fb"></div>
+    <button class="loes-btn" id="blech-loes-btn" onclick="toggleL('blech-loes')">🔍 Lösung</button>
+    <div class="loes-box" id="blech-loes">A_Blech = 2500 cm²<br>A_Deckel = 25 · π · 25 ≈ 1963,5 cm²<br>Abfall = 2500 - 1963,5 = 536,5 cm²<br>% = 536,5 / 2500 · 100 ≈ <strong>21,5 %</strong></div>
+  </div>
+</div>`,
 };
 
-// ═══════════ AUFGABEN CANVAS ZEICHNUNGEN ═══════════
-function drawAufgCanvases(id){
-  if(id==='maibaum')drawMaibaum();
-  if(id==='dorf')drawDorf();
-  if(id==='turm')drawTurm();
-  if(id==='mast')drawMast();
-  if(id==='strasse')drawStrasse();
-}
-
-function drawMaibaum(){
-  const cv=document.getElementById('cv-maibaum');if(!cv)return;
-  const W=cv.offsetWidth||320,H=170;cv.width=W;cv.height=H;
-  const ctx=cv.getContext('2d');
-  ctx.fillStyle='#f0fdf4';ctx.fillRect(0,0,W,H);
-  // Boden
-  cline(ctx,0,H-25,W,H-25,'#86efac',2);
-  ctx.fillStyle='#f0fdf4';ctx.fillRect(0,H-24,W,25);
-  // Sonnenstrahlen (gelb gestrichelt)
-  cline(ctx,10,10,W-15,H-25,C.gold,2,[5,4]);
-  // Baum (blau)
-  const bx=40, bh=120;
-  ctx.fillStyle='#dbeafe';ctx.fillRect(bx-6,H-25-bh,12,bh);
-  ctx.strokeStyle=C.blue;ctx.lineWidth=3;ctx.strokeRect(bx-6,H-25-bh,12,bh);
-  ctxt(ctx,'x',bx-22,H-25-bh/2,'#1e40af',13);
-  // Jana
-  const jx=W-80,jh=40;
-  ctx.fillStyle='#fca5a5';ctx.fillRect(jx-4,H-25-jh,8,jh);
-  ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.strokeRect(jx-4,H-25-jh,8,jh);
-  ctxt(ctx,'1,60m',jx+8,H-25-jh/2,C.red,10);
-  // Schatten
-  cline(ctx,bx,H-24,W-15,H-24,C.blue,3);
-  cline(ctx,jx,H-24,W-15,H-24,C.orange,3);
-  // Labels
-  ctxt(ctx,'8 m',bx+(W-15-bx)/2-12,H-8,C.blue,11);
-  ctxt(ctx,'2m',jx+(W-15-jx)/2-8,H-8,C.orange,11);
-  ctxt(ctx,'S',8,8,C.gold,13);
-}
-
-function drawDorf(){
-  const cv=document.getElementById('cv-dorf');if(!cv)return;
-  const W=cv.offsetWidth||320,H=200;cv.width=W;cv.height=H;
-  const ctx=cv.getContext('2d');
-  ctx.fillStyle='#eff6ff';ctx.fillRect(0,0,W,H);
-  // See (hellblau)
-  ctx.fillStyle='rgba(147,197,253,.4)';
-  ctx.beginPath();ctx.ellipse(W*0.52,H*0.55,80,55,0,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='#93c5fd';ctx.lineWidth=2;ctx.stroke();
-  ctxt(ctx,'🌊 See',W*0.52-25,H*0.55+5,'#1d4ed8',12);
-  // Punkte
-  const A={x:30,y:H*0.55},B={x:W*0.28,y:H*0.72},C2={x:W*0.3,y:H*0.25},D={x:W*0.65,y:H*0.82},E={x:W*0.88,y:H*0.1};
-  [['A',A,C.blue],['B',B,C.orange],['C',C2,C.green],['D',D,C.red],['E',E,C.purple]].forEach(([n,p,c])=>{
-    circ(ctx,p.x,p.y,c,8);
-    ctxt(ctx,n+'-Dorf',p.x+10,p.y+4,c,11);
-  });
-  // Linien
-  cline(ctx,A.x,A.y,B.x,B.y,C.blue,2);cline(ctx,B.x,B.y,D.x,D.y,C.blue,2);
-  cline(ctx,A.x,A.y,C2.x,C2.y,C.orange,2);cline(ctx,C2.x,C2.y,E.x,E.y,C.orange,2);
-  // Längen-Labels
-  ctxt(ctx,'7km',(A.x+B.x)/2-10,(A.y+B.y)/2-8,C.blue,10);
-  ctxt(ctx,'17km',(B.x+D.x)/2+4,(B.y+D.y)/2,C.blue,10);
-  ctxt(ctx,'9km',(A.x+C2.x)/2-20,(A.y+C2.y)/2-4,C.orange,10);
-  ctxt(ctx,'x km',(C2.x+E.x)/2-8,(C2.y+E.y)/2-8,C.orange,10);
-}
-
-function drawTurm(){
-  const cv=document.getElementById('cv-turm');if(!cv)return;
-  const W=cv.offsetWidth||320,H=160;cv.width=W;cv.height=H;
-  const ctx=cv.getContext('2d');
-  ctx.fillStyle='#fffbeb';ctx.fillRect(0,0,W,H);
-  cline(ctx,0,H-25,W,H-25,'#d97706',1.5);
-  // Turm
-  const tx=W-50,th=110;
-  ctx.fillStyle='#fcd34d';ctx.fillRect(tx-10,H-25-th,20,th);
-  ctx.strokeStyle='#d97706';ctx.lineWidth=2;ctx.strokeRect(tx-10,H-25-th,20,th);
-  ctxt(ctx,'h',tx+14,H-25-th/2,'#d97706',12);
-  // Person
-  const px=40,ph=30;
-  ctx.fillStyle='#fca5a5';ctx.fillRect(px-3,H-25-ph,6,ph);
-  ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.strokeRect(px-3,H-25-ph,6,ph);
-  // Lineal
-  cline(ctx,px+10,H-25-ph-5,px+10,H-25-ph-5+14,C.blue,3);
-  ctxt(ctx,'23cm',px+13,H-25-ph+2,C.blue,9);
-  // Sichtlinie
-  cline(ctx,px,H-25-ph+5,tx,H-25-th,C.purple,1.5,[4,3]);
-  // Distanzen
-  ctxt(ctx,'60cm',px-5,H-12,'#555',9);
-  ctxt(ctx,'220m',(px+tx)/2-15,H-8,C.orange,11);
-  ctxt(ctx,'1,70m',px-32,H-25-ph/2,'#555',9);
-}
-
-function drawMast(){
-  const cv=document.getElementById('cv-mast');if(!cv)return;
-  const W=cv.offsetWidth||320,H=180;cv.width=W;cv.height=H;
-  const ctx=cv.getContext('2d');
-  ctx.fillStyle='#f5f3ff';ctx.fillRect(0,0,W,H);
-  cline(ctx,0,H-20,W,H-20,'#c4b5fd',1.5);
-  // S Punkt
-  const sx=20,sy=H-20;
-  circ(ctx,sx,sy,C.purple,6);ctxt(ctx,'S',sx-4,sy-10,C.purple,12);
-  // Mauer
-  const mx=100,mh=75,mw=20;
-  ctx.fillStyle='#fca5a5';ctx.fillRect(mx,H-20-mh,mw,mh);
-  ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.strokeRect(mx,H-20-mh,mw,mh);
-  ctxt(ctx,'10,5m',mx+mw+3,H-20-mh/2,C.red,9);
-  // Mast
-  const mastx=mx+mw+90,masth=120;
-  cline(ctx,mastx,H-20,mastx,H-20-masth,C.blue,4);
-  circ(ctx,mastx,H-20-masth,C.blue,5);
-  ctxt(ctx,'t',mastx+5,H-20-masth/2,C.blue,12);
-  // Sichtlinie
-  cline(ctx,sx,sy,mastx,H-20-masth,'#fbbf24',2,[4,3]);
-  // Distanzen
-  cline(ctx,sx,H-12,mx,H-12,'#555',1);ctxt(ctx,'4,5m',(sx+mx)/2-12,H-4,'#555',9);
-  cline(ctx,mx,H-12,mx+mw,H-12,'#555',1);ctxt(ctx,'2m',mx+2,H-4,'#555',9);
-  cline(ctx,mx+mw,H-12,mastx,H-12,'#555',1);ctxt(ctx,'11,5m',(mx+mw+mastx)/2-14,H-4,'#555',9);
-}
-
-function drawStrasse(){
-  const cv=document.getElementById('cv-strasse');if(!cv)return;
-  const W=cv.offsetWidth||320,H=140;cv.width=W;cv.height=H;
-  const ctx=cv.getContext('2d');
-  ctx.fillStyle='#f0fdf4';ctx.fillRect(0,0,W,H);
-  // Boden
-  cline(ctx,20,H-30,W-20,H-30,'#86efac',1.5);
-  // Straße
-  cline(ctx,20,H-30,W-20,H-80,C.green,3);
-  // Höhe h
-  cline(ctx,W-20,H-30,W-20,H-80,C.red,3);
-  ctxt(ctx,'h',W-16,H-55,C.red,13);
-  // Abstände
-  cline(ctx,20,H-18,W-20,H-18,'#555',1);
-  ctxt(ctx,'2,3 km',(W/2)-22,H-7,'#333',11);
-  // 12m/100m Label
-  cline(ctx,20,H-30,60,H-30,'#555',1);cline(ctx,60,H-30,60,H-42,C.red,2);
-  ctxt(ctx,'12m',62,H-36,C.red,9);ctxt(ctx,'100m',28,H-20,'#555',9);
-}
-
-// ═══════════ MOXS AI ═══════════
+// ═════════ KI CHAT ═════════
 let mO=false,mW=false,mH=[];
 function toggleM(){
   mO=!mO;
@@ -1426,48 +1512,37 @@ function toggleM(){
 function mMsg(role,text){
   const c=document.getElementById('mmsgs');
   const d=document.createElement('div');d.className='mmsg '+role;
-  const html=text.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/```([^```]+)```/g,'<code style="font-family:JetBrains Mono,monospace;background:#f0f4ff;padding:2px 4px;border-radius:4px">$1</code>');
-  d.innerHTML=`<div class="mav2">${role==='ai'?'MX':'Du'}</div><div class="mbbl">${html}</div>`;
+  const html=text.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code style="font-family:DM Mono,monospace;background:rgba(79,142,247,.1);padding:1px 5px;border-radius:4px;font-size:10px">$1</code>');
+  d.innerHTML=`<div class="mav2">${role==='ai'?'KI':'Du'}</div><div class="mbbl">${html}</div>`;
   c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
 function mDots(){
   const c=document.getElementById('mmsgs');
   const d=document.createElement('div');d.className='mmsg ai';d.id='mdots_';
-  d.innerHTML=`<div class="mav2">MX</div><div class="mbbl"><div class="mdots"><span></span><span></span><span></span></div></div>`;
+  d.innerHTML=`<div class="mav2">KI</div><div class="mbbl"><div class="mdots"><span></span><span></span><span></span></div></div>`;
   c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
-function mAsk(p){
-  if(!mO)toggleM();
-  setTimeout(()=>{document.getElementById('minp').value=p;mSend();},300);
-}
+function mAsk(p){if(!mO)toggleM();setTimeout(()=>{document.getElementById('minp').value=p;mSend();},300);}
 
-const MOXS_SYSTEM=`Du bist MOXS, ein sehr intelligenter und freundlicher Mathe-Tutor für Schüler, der sich auf die 3 Strahlensätze spezialisiert hat.
+const SYS_PROMPT=`Du bist ein persönlicher Mathe-Berater für Samuel, Schüler der 9. Klasse Realschule NRW. Am 12.06.2026 schreibt er eine Arbeit über "Strahlensatz & Kreis".
 
-WICHTIG — Dein Stil:
-- Du erklärst IMMER anhand konkreter Aufgaben, Skizzen (als ASCII oder Beschreibung) und Zahlenbeispielen — NIE nur mit abstraktem Text!
-- Du verwendest Farben in deinen Erklärungen: 🔵 blau für SA, 🟠 orange für AB, 🟡 gelb für Scheitel S
-- Du zeigst Schritt-für-Schritt Lösungen wie im Schulheft
-- Du gibst NIE direkt die Antwort, wenn der Schüler fragt "Was ist x?" — stattdessen führst du ihn mit Fragen zum Ergebnis
-- Du bist motivierend: "Fast!", "Super Ansatz!", "Genau die richtige Richtung!"
-- Max 6 Zeilen pro Antwort
+Dein Stil:
+- Erkläre IMMER anhand von konkreten Zahlenbeispielen mit Schritt-für-Schritt
+- Zeige Formeln und Rechnungen deutlich
+- Gib NIE die Lösung der gestellten Aufgabe direkt — führe mit Fragen hin
+- Kurz: maximal 7 Zeilen
 - Immer auf Deutsch
+- Freundlich motivierend: "Fast!", "Super!", "Richtige Richtung!"
 
-DIE 3 STRAHLENSÄTZE:
-1. Satz: SA/AB = SC/CD (AB = Abstand zwischen den Parallelen)
-2. Satz: SA/SB = SC/SD (SB = ganzer Weg von S aus)  
-3. Satz: SA/SB = AC/BD (AC/BD = Länge der Parallelen selbst)
+Themen der Arbeit:
+1. Strahlensatz V-Figur: SA/AB=SC/CD (1. Satz), SA/SB=SC/SD (2. Satz), SA/SB=AC/BD (3. Satz)
+2. X-Figur (über Kreuz): SA/SB=SC/SD, S ist in der Mitte
+3. Kreis: u=2πr, A=πr²
+4. Kreissektor: b=2πr·α/360°, A_S=πr²·α/360°, auch A_S=b·r/2
+5. Kreistabelle ausfüllen
+6. Alltagsaufgaben: Schatten/Höhe, Eiffelturm, Mond, Fluss, Platz pflastern
 
-TYPISCHE AUFGABEN AUS DEM BUCH:
-- Maibaum: x/8 = 1,60/2 → x=6,4m
-- Dorf: 7/17 = 9/x → x≈21,86km
-- Mast: t/18 = 10,5/4,5 → t=42m
-- Turm: h/220 = 0,23/0,60 → h≈84,33m + 1,70m Augenhöhe
-
-WENN DU EINE AUFGABE ERKLÄRST:
-1. Zuerst eine einfache ASCII-Skizze oder beschreibe was man zeichnen soll
-2. Dann erkläre welchen Satz man nimmt und WARUM
-3. Zeige die Formel mit den eingesetzten Werten
-4. Lass den Schüler selbst ausrechnen`;
+Wenn der Schüler bei einer Aufgabe feststeckt: Erkläre zuerst den passenden Strahlensatz, dann zeige ein ÄHNLICHES Beispiel (nicht die selbe Aufgabe!).`;
 
 async function mSend(){
   if(mW)return;
@@ -1482,25 +1557,25 @@ async function mSend(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
-        max_tokens:500,
-        system:MOXS_SYSTEM,
+        max_tokens:400,
+        system:SYS_PROMPT,
         messages:[...mH.slice(-6).flatMap(h=>[{role:'user',content:h.u},{role:'assistant',content:h.a}]),{role:'user',content:msg}]
       })
     });
     const data=await res.json();
     document.getElementById('mdots_')?.remove();
-    const r=data.content?.[0]?.text||'Entschuldigung, Verbindungsfehler!';
+    const r=data.content?.[0]?.text||'Verbindungsfehler — versuch es nochmal!';
     mH.push({u:msg,a:r});if(mH.length>8)mH=mH.slice(-8);
     mMsg('ai',r);
   }catch(e){
     document.getElementById('mdots_')?.remove();
-    mMsg('ai','❌ Verbindungsfehler. Versuch es nochmal!');
+    mMsg('ai','❌ Verbindungsfehler. Nochmal versuchen!');
   }
   mW=false;document.getElementById('msend').disabled=false;
   document.getElementById('minp').focus();
 }
 
-// ═══════════ RECHNER ═══════════
+// ═════════ RECHNER ═════════
 let cCur='0',cPrev='',cOpr='',cNew=true,cHistArr=[];
 function cDisp(){document.getElementById('cval').textContent=cCur;document.getElementById('cexpr').textContent=cPrev&&cOpr?cPrev+' '+cOpr:'\u00a0';}
 function cNum(n){if(cNew){cCur=n;cNew=false;}else cCur=cCur==='0'?n:cCur+n;cDisp();}
@@ -1510,11 +1585,10 @@ function cEqI(){
   const a=parseFloat(cPrev.replace(',','.')),b=parseFloat(cCur.replace(',','.'));
   let r;
   switch(cOpr){
-    case '+':r=a+b;break;case '−':r=a-b;break;case '×':r=a*b;break;
-    case '÷':r=b?a/b:0;break;default:r=b;
+    case '+':r=a+b;break;case '−':r=a-b;break;case '×':r=a*b;break;case '÷':r=b?a/b:0;break;default:r=b;
   }
   const rS=String(Math.round(r*1e9)/1e9).replace('.',',');
-  cHistArr.unshift(cPrev+' '+cOpr+' '+cCur+' = '+rS);if(cHistArr.length>6)cHistArr.pop();
+  cHistArr.unshift(cPrev+' '+cOpr+' '+cCur+' = '+rS);if(cHistArr.length>7)cHistArr.pop();
   document.getElementById('chist').innerHTML=cHistArr.map(h=>`<div class="ch-item">${h}</div>`).join('');
   cCur=rS;cPrev='';cOpr='';cNew=true;
 }
@@ -1523,12 +1597,22 @@ function cAC(){cCur='0';cPrev='';cOpr='';cNew=true;cDisp();}
 function cDel(){if(cNew||cCur.length<=1){cCur='0';cNew=true;}else cCur=cCur.slice(0,-1);cDisp();}
 function cSign(){cCur=String(-parseFloat(cCur.replace(',','.'))).replace('.',',');cDisp();}
 function cPct(){cCur=String(parseFloat(cCur.replace(',','.'))/100).replace('.',',');cDisp();}
-function cPow(n){const v=parseFloat(cCur.replace(',','.'));const r=Math.pow(v,n);const rS=String(Math.round(r*1e9)/1e9).replace('.',',');cHistArr.unshift(cCur+'^'+n+'='+rS);if(cHistArr.length>6)cHistArr.pop();document.getElementById('chist').innerHTML=cHistArr.map(h=>`<div class="ch-item">${h}</div>`).join('');cCur=rS;cNew=true;cDisp();}
-function cSqrt(){const v=parseFloat(cCur.replace(',','.'));const r=Math.sqrt(v);const rS=String(Math.round(r*1e9)/1e9).replace('.',',');cHistArr.unshift('√'+cCur+'='+rS);if(cHistArr.length>6)cHistArr.pop();document.getElementById('chist').innerHTML=cHistArr.map(h=>`<div class="ch-item">${h}</div>`).join('');cCur=rS;cNew=true;cDisp();}
+function cPow(n){const v=parseFloat(cCur.replace(',','.'));const r=Math.pow(v,n);const rS=String(Math.round(r*1e9)/1e9).replace('.',',');cHistArr.unshift(cCur+'^'+n+'='+rS);if(cHistArr.length>7)cHistArr.pop();document.getElementById('chist').innerHTML=cHistArr.map(h=>`<div class="ch-item">${h}</div>`).join('');cCur=rS;cNew=true;cDisp();}
+function cSqrt(){const v=parseFloat(cCur.replace(',','.'));const r=Math.sqrt(v);const rS=String(Math.round(r*1e9)/1e9).replace('.',',');cHistArr.unshift('√'+cCur+'='+rS);if(cHistArr.length>7)cHistArr.pop();document.getElementById('chist').innerHTML=cHistArr.map(h=>`<div class="ch-item">${h}</div>`).join('');cCur=rS;cNew=true;cDisp();}
+function cPi(){const r=String(Math.PI).replace('.',',');cHistArr.unshift('π='+r);if(cHistArr.length>7)cHistArr.pop();document.getElementById('chist').innerHTML=cHistArr.map(h=>`<div class="ch-item">${h}</div>`).join('');cCur=r;cNew=true;cDisp();}
+function cHistClear(){cHistArr=[];document.getElementById('chist').innerHTML='';}
 
-// ═══════════ TOAST ═══════════
+// ═════════ TOAST ═════════
 let tt;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),2700);}
+
+// ═════════ INIT ═════════
+window.addEventListener('DOMContentLoaded',()=>{
+  ld();buildGrid();buildAufgGrid();buildKreisGrid();
+  setTimeout(()=>{
+    mMsg('ai','Hey Samuel! 👋\n\nIch bin dein **KI-Berater** für die Arbeit am 12.06. Ich erkläre Strahlensatz, X-Figur und Kreisformeln — immer mit Schritt-für-Schritt Beispielen.\n\n💡 Ich verrate dir nicht die Lösung, aber ich helfe dir, sie selbst zu finden!');
+  },600);
+});
 </script>
 </body>
 </html>
